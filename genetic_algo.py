@@ -1,4 +1,5 @@
 import numpy as np
+from random import *
 
 
 def Random_genome(T) :
@@ -68,7 +69,52 @@ def Select_pictures(pop,choice):
             pop_chosen.append(pop[i])
     return np.array(pop_chosen)
 
-def Mutation(pop,mut_rate) :##besoin savoir composition vecteur
-    for genome in pop :
+def Mutation(pop, mut_rate): ##besoin savoir composition vecteur
+    """
+    Returns a new array of mutated version of each "genome" in pop, with a set mutation mut_rate
+
+    Args :
+        pop (np.array) : The population vector
+        mut_rate (float) : The mutation rate for each gene
+
+    Returns :
+        np.array : The vector of mutated genomes
+
+    """
+    for genome in pop :##besoin copie profonde ?
         for gene in genome :
-            if np.random.random()
+            if (random() < mut_rate) :
+                """
+                pour test
+                """
+                gene = gene * -1
+                """
+                pour test
+                """
+    return(pop)
+
+def crossing_Over(pop, cross_rate):
+    """
+    Returns a np.array of the population after crossing over of the genomes
+
+    Args :
+        pop (np.array) : The population vector
+        cross_rate (float) : The crossing over rate for each genome
+
+    Returns :
+        np.array : The vector of genomes after the crossing over.
+
+    """
+
+    new_pop = np.copy(pop) # deep copy of the population
+
+    for i in range(0,len(new_pop)):
+        if random() < cross_rate:
+            indc = randint(0, new_pop.shape[0]-1) ##select random genome
+            posc = randint(0, new_pop.shape[1]-1) ##select random gene
+
+            tmp = new_pop[i,posc:new_pop.shape[1]]
+            new_pop[i,posc:new_pop.shape[1]] = new_pop[indc,posc:new_pop.shape[1]]
+            new_pop[indc,posc:new_pop.shape[1]] = tmp
+
+    return new_pop
