@@ -17,10 +17,7 @@ def Random_genome(T) :
     """
     rd = []
     for i in range(0,T):
-        if (np.random.random()*2-1)>0:##replace by values for the middle layer of NN
-            rd.append(1)
-        else :
-            rd.append(-1)
+        rd.append(np.random.random()*4)##values in the NN are small decimal values (dunno the limits yet)
     genome = np.array(rd)
     return genome
 
@@ -64,9 +61,8 @@ def Select_pictures(pop,choice):
 
     """
     pop_chosen = []
-    for i in range(pop.shape[0]) :
-        if choice[i] == 1 :
-            pop_chosen.append(pop[i])
+    for i in choice :
+            pop_chosen.append(pop[i-1])
     return np.array(pop_chosen)
 
 def Mutation(pop, mut_rate): ##besoin savoir composition vecteur
@@ -88,7 +84,7 @@ def Mutation(pop, mut_rate): ##besoin savoir composition vecteur
                 """
                 pour test
                 """
-                genome[i] = genome[i] * -1
+                genome[i] = np.random.normal(loc = genome[i], scale = 0.5)
                 """
                 pour test
                 """
@@ -216,8 +212,8 @@ print(c_test)
 """
 
 print('Test Algo "total"')
-init = Random_population(10,5)
-final = Genetic_Algorithm(init,0.1,0.2,10,5,10)
+init = Random_population(10,2)
+final = Genetic_Algorithm(init,0.1,0.2,10,2,10)
 print(final)
 
 """
