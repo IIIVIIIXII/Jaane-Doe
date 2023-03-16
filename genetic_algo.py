@@ -192,7 +192,7 @@ def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
             pop_chosen = Select_pictures(pop,choice[1])
             previous_pop = np.copy(pop)
             pop = Next_Generation(pop_chosen,N,mut_rate,cross_rate)
-        else if choice[0] == 2 : ##manages final picture choice
+        elif choice[0] == 2 : ##manages final picture choice
             pop = Select_pictures(pop,choice[1])
             end_picture = True
         else:##return to previous population
@@ -225,13 +225,13 @@ print("test input")
 c_test = Get_input()
 print(c_test)
 """
-
+"""
 print('Test Algo "total"')
 init = Random_population(10,2)
 decode = keras.models.load_model("path/to/model")
 final = Genetic_Algorithm(init,0.1,0.2,10,decode,10)
 print(final)
-
+"""
 """
 print(11//2)#quotient
 print(11%2)#remainder
