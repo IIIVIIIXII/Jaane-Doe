@@ -1,4 +1,6 @@
 import numpy as np
+import tensorflow as tf
+from tensorflow import keras
 from random import *
 
 
@@ -62,7 +64,7 @@ def Select_pictures(pop,choice):
     """
     pop_chosen = []
     for i in choice :
-            pop_chosen.append(pop[i-1])
+            pop_chosen.append(pop[i-1])##delete the minus 1 depending on input
     return np.array(pop_chosen)
 
 def Mutation(pop, mut_rate): ##besoin savoir composition vecteur
@@ -116,13 +118,20 @@ def Crossing_Over(pop, cross_rate):
 
     return new_pop
 
-def Get_input() :
+def User_action(pop,decode) :
     """
     Retrieves the user's input, and formats it to be used by the algorithm
+        Args :
+            pop (np.array) : The current population of pictures
+            decode (keras model) : The decoding neural network
 
         Returns :
-            np.array : The list of the user's choices
+            tuple (int,np.array) : The action chosen by the user (return, selected, final picture), and the list of the user's choices
 
+    """
+    pictures = decode.predict(pop)
+    """
+    send the pictures to the graphical interface
     """
     inp = input("Give your selection").split()
     choice = []
@@ -154,17 +163,15 @@ def Next_Generation(pop, N, mut_rate, cross_rate) :
         mut_pop = Crossing_Over(Mutation(mut_pop, mut_rate),cross_rate)
         new_pop = np.append(new_pop,mut_pop,axis = 0)
     if r != 0 :# if the population is not full yet, we add the remaining by mutating a random selection of r genomes
-        rdm_draw = [] ##rename variable
-        for i in range(r):
-            rdm = randint(0, new_pop.shape[0]) ##rename variable
-            rdm_draw.append(new_pop[rdm])
+        ##rename variable
+        rdm_draw = randint(0, new_pop.shape[0],size = r) ##rename variable
         end_pop = np.array(rdm_draw)
         mut_pop = Crossing_Over(Mutation(end_pop, mut_rate),cross_rate)
         new_pop = np.append(new_pop,mut_pop,axis = 0)
 
     return new_pop
-
-def Genetic_Algorithm(init,mut_rate,cross_rate,N,T,n_gen):
+####Add save of the last generation, for easy return
+def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
     """
     Selects the best pictures through a genetic algorithm
 
@@ -177,11 +184,19 @@ def Genetic_Algorithm(init,mut_rate,cross_rate,N,T,n_gen):
     """
     pop = init
     i = 0
-    while i < n_gen :
-        print(pop)
-        choice = Get_input()
-        pop_chosen = Select_pictures(pop,choice)
-        pop = Next_Generation(pop_chosen,N,mut_rate,cross_rate)
+    previous_pop = np.copy(pop)
+    end_picture = False
+    while i < n_gen or end_picture :
+        choice = User_action(pop,decode)
+        if choice[0] == 1 :## can change depending on input format
+            pop_chosen = Select_pictures(pop,choice[1])
+            previous_pop = np.copy(pop)
+            pop = Next_Generation(pop_chosen,N,mut_rate,cross_rate)
+        else if choice[0] == 2 : ##manages final picture choice
+            pop = Select_pictures(pop,choice[1])
+            end_picture = True
+        else:##return to previous population
+            pop = np.copy(previous_pop)
 
         i += 1
     return(pop)
@@ -213,10 +228,12 @@ print(c_test)
 
 print('Test Algo "total"')
 init = Random_population(10,2)
-final = Genetic_Algorithm(init,0.1,0.2,10,2,10)
+decode = keras.models.load_model("path/to/model")
+final = Genetic_Algorithm(init,0.1,0.2,10,decode,10)
 print(final)
 
 """
 print(11//2)#quotient
 print(11%2)#remainder
 """
+##Select_pictures sur pop -1 pour le moment
