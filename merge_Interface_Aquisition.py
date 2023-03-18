@@ -140,15 +140,15 @@ def CaractInit():
 
 
 ################################# PARTIE IMPORTATION######################
-
-dict=CaractInit()
-columns=[]
-datas=[]
-for key in dict:
-    column.append(key)
-    datas.append(dict[key])
-
-choix = pds.DataFrame(data=datas, columns = column, index=None)
+def Get_choice():
+    dict=CaractInit()
+    column=[]
+    datas=[]
+    for key in dict:
+        column.append(key)
+        datas.append(dict[key])
+    choix = pds.DataFrame(data=[datas], columns = column, index=None)
+    return(choix)
 
 def selectionlignes(choix):
     """
@@ -166,17 +166,18 @@ def selectionlignes(choix):
     newdata = data.query(str(c))
     return newdata
 #la je suis bloquee parce qu'il y a une erreur que je comprends pas
-
+"""
 #test
 selectionimages = selectionlignes(choix)
-
+"""
 #selection des 10 images aleatoires
 def diximages(selectionimages):
     listeimages = list(selectionimages.index)
     imagesdepart = []
     for i in range(10):
-        imagesdepart.append(listeimages[randint(0, len(listeimages))])
+        imagesdepart.append(listeimages[randint(0, len(listeimages)-1)])
     return imagesdepart
-
+"""
 #test
 listeimagesdepart = diximages(selectionimages)
+"""
