@@ -2,6 +2,8 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from random import *
+import matplotlib.pyplot as plt
+
 
 
 def Random_genome(T) :
@@ -20,7 +22,7 @@ def Random_genome(T) :
     rd = []
     for i in range(0,T):
         rd.append(np.random.random()*4)##values in the NN are small decimal values (dunno the limits yet)
-    genome = np.array(rd)
+    ##genome = np.array(rd)
     return genome
 
 def Random_population(N,T) :
@@ -81,15 +83,17 @@ def Mutation(pop, mut_rate): ##besoin savoir composition vecteur
     """
     new_pop = np.copy(pop)
     for genome in new_pop :##besoin copie profonde ?
-        for i in range(len(genome)) :
-            if (random() < mut_rate) :
-                """
-                pour test
-                """
-                genome[i] = np.random.normal(loc = genome[i], scale = 0.5)
-                """
-                pour test
-                """
+        for channel in genome :
+            for vector in channel :
+                for i in range(len(vector)) :
+                    if (random() < mut_rate) :
+                        """
+                        pour test
+                        """
+                        vector[i] = np.random.normal(loc = vector[i], scale = 3)
+                        """
+                        pour test
+                        """
     return(new_pop)
 
 def Crossing_Over(pop, cross_rate):
@@ -129,16 +133,21 @@ def User_action(pop,decode) :
             tuple (int,np.array) : The action chosen by the user (return, selected, final picture), and the list of the user's choices
 
     """
-    pictures = decode.predict(pop)
+    pictures = []
+    for i in range(len(pop)) :
+        pictures.append(decode.predict([pop[i].tolist()]))
+    Show_pics(pictures)
     """
     send the pictures to the graphical interface
     """
     inp = input("Give your selection").split()
+    action = int(inp[0])
     choice = []
-    for i in range(len(inp)) :
-        choice.append(int(inp[i]))
-
-    return choice
+    for i in range(len(inp)-1) :
+        choice.append(int(inp[i+1]))
+    print(action)
+    print(choice)
+    return (action,choice)
 
 def Next_Generation(pop, N, mut_rate, cross_rate) :
     """
@@ -164,13 +173,26 @@ def Next_Generation(pop, N, mut_rate, cross_rate) :
         new_pop = np.append(new_pop,mut_pop,axis = 0)
     if r != 0 :# if the population is not full yet, we add the remaining by mutating a random selection of r genomes
         ##rename variable
-        rdm_draw = randint(0, new_pop.shape[0],size = r) ##rename variable
-        end_pop = np.array(rdm_draw)
+        print("vous ici ?")
+        rdm_draw = np.random.randint(0, new_pop.shape[0],size = r) ##rename variable
+        end_pop = np.array(new_pop[rdm_draw])
         mut_pop = Crossing_Over(Mutation(end_pop, mut_rate),cross_rate)
         new_pop = np.append(new_pop,mut_pop,axis = 0)
 
     return new_pop
 ####Add save of the last generation, for easy return
+def Show_pics(decoded_pic):
+    n = 10  # How many faces we will display
+    plt.figure(figsize=(20, 4))
+    for i in range(n):
+        # Display reconstruction
+        ax = plt.subplot(2, n, i + 1 + n)
+        plt.imshow(decoded_pic[i][0])
+
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+    plt.show()
+
 def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
     """
     Selects the best pictures through a genetic algorithm
@@ -186,20 +208,27 @@ def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
     i = 0
     previous_pop = np.copy(pop)
     end_picture = False
-    while i < n_gen or end_picture :
+    while i < n_gen and end_picture == False :
+        if(end_picture):
+            print("what am I doing here ?")
         choice = User_action(pop,decode)
+        print("ici")
+        print(choice[0])
+        print(choice[0] == 1)
+        print(isinstance(choice[0], int))
         if choice[0] == 1 :## can change depending on input format
             pop_chosen = Select_pictures(pop,choice[1])
             previous_pop = np.copy(pop)
             pop = Next_Generation(pop_chosen,N,mut_rate,cross_rate)
         elif choice[0] == 2 : ##manages final picture choice
+            print("final countdown")
             pop = Select_pictures(pop,choice[1])
             end_picture = True
         else:##return to previous population
             pop = np.copy(previous_pop)
 
         i += 1
-    return(pop)
+    return(end_picture,pop)
 
 
 
