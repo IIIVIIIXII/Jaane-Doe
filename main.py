@@ -13,19 +13,21 @@ import merge_Interface_Aquisition as itrf
 
 ## 0] importations
 load = np.loadtxt('Encoded_100_vectors.txt')
-## 1] questions
+##[25 35 43 38 42 70 99 45 76 17] cool vector
 
+## 1] questions
+"""
 carac = itrf.Get_choice()
 pics = itrf.selectionlignes(carac)
 lis_pics = itrf.diximages(pics)##picks the same image multiple times
 print(lis_pics)
-
+"""
 ## 2] genetic algorithm
 
 decode = keras.models.load_model("decoder_model7.h5")
 
 mut_rate = 0.1
-cross_rate = 0.8
+cross_rate = 0.9
 p_size = 10
 n_gen = 10
 encod_size = 64

@@ -4,6 +4,7 @@ from tensorflow import keras
 from random import *
 import matplotlib.pyplot as plt
 
+from merge_Interface_Aquisition import pack_image
 
 
 
@@ -109,7 +110,7 @@ def Crossing_Over(pop, cross_rate):
         np.array : The vector of genomes after the crossing over.
 
     """
-
+    """
     new_pop = np.copy(pop) # deep copy of the population
 
     for i in range(0,new_pop.shape[0]):
@@ -128,6 +129,30 @@ def Crossing_Over(pop, cross_rate):
                 new_pop[indc,posc:new_pop.shape[1]] = tmp
 
     return new_pop
+    """
+##test new version
+    new_pop = np.copy(pop) # deep copy of the population
+
+    for i in range(0,new_pop.shape[0]):
+        if random() < cross_rate:
+            flat_genome = new_pop[i].flatten() ##flatten the vector
+            indc = randint(0, new_pop.shape[0]-1) ##select random genome
+            posc = randint(0, len(flat_genome)) ##select random gene
+            print("posc")
+            print(posc)
+            flat_indc = new_pop[indc].flatten()
+
+            tmp = flat_genome[posc:len(flat_genome)]
+
+            flat_genome[posc:len(flat_genome)] = flat_indc[posc:len(flat_indc)]
+            flat_indc[posc:len(flat_indc)] = tmp
+
+            new_pop[i] = pack_image(flat_genome)
+            new_pop[indc] = pack_image(flat_indc)
+
+        return new_pop
+
+
 
 def User_action(pop,decode) :
     """
@@ -143,6 +168,7 @@ def User_action(pop,decode) :
     pictures = []
     for i in range(len(pop)) :
         pictures.append(decode.predict([pop[i].tolist()]))
+
     Show_pics(pictures)
     """
     send the pictures to the graphical interface
@@ -153,6 +179,7 @@ def User_action(pop,decode) :
     for i in range(len(inp)-1) :
         choice.append(int(inp[i+1]))
     return (action,choice)
+
 
 def Next_Generation(pop, N, mut_rate, cross_rate) :
     """
@@ -169,7 +196,7 @@ def Next_Generation(pop, N, mut_rate, cross_rate) :
         Returns :
             np.array : The new population
     """
-    new_pop = np.copy(pop)
+    new_pop = Crossing_Over(Mutation(np.copy(pop),mut_rate),cross_rate)
     q = N//new_pop.shape[0]##how many times can we put our chosen pop in the full pop
     r = N%new_pop.shape[0]##how many pictures are needed to completely fill the pop
     mut_pop = np.copy(new_pop)
