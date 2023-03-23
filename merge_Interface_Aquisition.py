@@ -3,6 +3,7 @@ import pandas as pds
 from random import randint
 from tkinter import *
 from tkinter import ttk
+import numpy as np
 
 #Importation de la table
 data = pds.read_csv('list_attr_celeba.txt', delim_whitespace=True, index_col = 0) #là j'utilise les deux listes (celle raccourcie et celle entière psk y a pas le header dans la liste raccourcie)
@@ -181,3 +182,31 @@ def diximages(selectionimages):
 #test
 listeimagesdepart = diximages(selectionimages)
 """
+def init_selection(pic_list):
+    chosen_pics = np.random.randint(0,len(pic_list),size = 10)
+    print(chosen_pics)
+    init_pics = []
+    for index in chosen_pics :
+        init_pics.append(pack_image(pic_list[index]))
+    return np.array(init_pics)
+
+def pack_image(image):
+    """
+    Puts the encoded pictures in the right format for the decoder (8,8,64)
+
+    Args :
+        image (np.array) : The line vector of the encoded picture
+
+    Returns :
+        (list) : The encoded picture in the right format
+    """
+    picture = [0] * 8
+    pix = 0
+    for i in range(8) :
+        picture[i] = [0] * 8
+        for j in range(8) :
+            picture[i][j] = [0] * 64
+            for k in range(64) :
+                picture[i][j][k] = image[pix]
+                pix +=1
+    return picture

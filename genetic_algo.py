@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 
 
+
 def Random_genome(T) :
     """
     This function creates a random vector corresponding to the encoded version
@@ -115,10 +116,16 @@ def Crossing_Over(pop, cross_rate):
         if random() < cross_rate:
             indc = randint(0, new_pop.shape[0]-1) ##select random genome
             posc = randint(0, new_pop.shape[1]-1) ##select random gene
+            sposc = randint(0, len(new_pop[0][0])) ##select random sub-gene
 
-            tmp = new_pop[i,posc:new_pop.shape[1]]
-            new_pop[i,posc:new_pop.shape[1]] = new_pop[indc,posc:new_pop.shape[1]]
-            new_pop[indc,posc:new_pop.shape[1]] = tmp
+            if random() < 0.3 :##added for more specific crossing over
+                tmp = new_pop[i,posc,sposc:len(new_pop[i,0])]
+                new_pop[i,posc,sposc:len(new_pop[i,0])] = new_pop[indc,posc,sposc:len(new_pop[i,0])]
+                new_pop[indc,posc,sposc:len(new_pop[i,0])] = tmp
+            else :
+                tmp = new_pop[i,posc:new_pop.shape[1]]
+                new_pop[i,posc:new_pop.shape[1]] = new_pop[indc,posc:new_pop.shape[1]]
+                new_pop[indc,posc:new_pop.shape[1]] = tmp
 
     return new_pop
 
@@ -145,8 +152,6 @@ def User_action(pop,decode) :
     choice = []
     for i in range(len(inp)-1) :
         choice.append(int(inp[i+1]))
-    print(action)
-    print(choice)
     return (action,choice)
 
 def Next_Generation(pop, N, mut_rate, cross_rate) :
@@ -173,7 +178,6 @@ def Next_Generation(pop, N, mut_rate, cross_rate) :
         new_pop = np.append(new_pop,mut_pop,axis = 0)
     if r != 0 :# if the population is not full yet, we add the remaining by mutating a random selection of r genomes
         ##rename variable
-        print("vous ici ?")
         rdm_draw = np.random.randint(0, new_pop.shape[0],size = r) ##rename variable
         end_pop = np.array(new_pop[rdm_draw])
         mut_pop = Crossing_Over(Mutation(end_pop, mut_rate),cross_rate)
@@ -209,19 +213,12 @@ def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
     previous_pop = np.copy(pop)
     end_picture = False
     while i < n_gen and end_picture == False :
-        if(end_picture):
-            print("what am I doing here ?")
         choice = User_action(pop,decode)
-        print("ici")
-        print(choice[0])
-        print(choice[0] == 1)
-        print(isinstance(choice[0], int))
         if choice[0] == 1 :## can change depending on input format
             pop_chosen = Select_pictures(pop,choice[1])
             previous_pop = np.copy(pop)
             pop = Next_Generation(pop_chosen,N,mut_rate,cross_rate)
         elif choice[0] == 2 : ##manages final picture choice
-            print("final countdown")
             pop = Select_pictures(pop,choice[1])
             end_picture = True
         else:##return to previous population
