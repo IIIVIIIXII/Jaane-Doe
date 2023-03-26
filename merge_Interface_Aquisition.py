@@ -26,6 +26,12 @@ for i in nonutilisees:
 #a8bba0
 #d0d9c8
 def CaractInit():
+    """
+    This functions codes the attributes selection window of the programs.
+
+    Returns :
+        (list) : A list of the choice for each attribute
+    """
 
     #Dictionnaire des attributs selectionnés
     listAttrInit = {"Five_o_Clock_Shadow":-1,"Arched_Eyebrows":-1,"Bald":-1,"Big_Nose":-1,"Black_Hair":-1,"Blond_Hair":-1,"Brown_Hair":-1,"Bushy_Eyebrows":-1,"Eyeglasses":-1,"Goatee":-1,"Grey_Hair":-1,"Male":-1,"Mustache":-1,"No_Beard":-1,"Pointy_Nose":-1,"Receding_Hairline":-1,"Sideburns":-1,"Straight_Hair":-1,"Wavy_Hair":-1}
@@ -142,6 +148,12 @@ def CaractInit():
 
 ################################# PARTIE IMPORTATION######################
 def Get_choice():
+    """
+    This function launches the choice window, and formats the output into a DataFrame
+
+        Returns :
+            (DataFrame): The user's choice as a Dataframe
+    """
     dict=CaractInit()
     column=[]
     datas=[]
@@ -153,10 +165,12 @@ def Get_choice():
 
 def selectionlignes(choix):
     """
-    Entrée :
-        choix = tableau généré par l'utilisateur apres avoir choisi ses attributs
-    Sortie :
-        newdata = tableau filtré avec uniquement les lignes correspondantes à ce que l'utilisateur recherche
+    Queries the picture database to find which pictures match the user's description.
+
+        Entrée :
+            choix = tableau généré par l'utilisateur apres avoir choisi ses attributs
+        Sortie :
+            newdata = tableau filtré avec uniquement les lignes correspondantes à ce que l'utilisateur recherche
     """
     caractere = list(choix.columns.values)
     c = '=='.join((str(caractere[0]),str(int(choix[caractere[0]]))))
@@ -173,6 +187,15 @@ selectionimages = selectionlignes(choix)
 """
 #selection des 10 images aleatoires
 def diximages(selectionimages):
+    """
+    Picks ten random pictures from those given
+
+        Args :
+            selectionimages (DataFrame) : A table containing all possible pictures to choose from
+
+        Returns :
+            (list) : The list of names of the chosen pictures
+    """
     listeimages = list(selectionimages.index)
     imagesdepart = []
     for i in range(10):
@@ -183,6 +206,15 @@ def diximages(selectionimages):
 listeimagesdepart = diximages(selectionimages)
 """
 def init_selection(pic_list):
+    """
+    Picks ten random pictures
+
+        Args :
+            pic_list (np.array) : An array with all possible picture to choose from
+
+        Returns :
+            (np.array) : The array of chosen pictures
+    """
     chosen_pics = np.random.randint(0,len(pic_list),size = 10)
     print(chosen_pics)
     init_pics = []
@@ -194,11 +226,11 @@ def pack_image(image):
     """
     Puts the encoded pictures in the right format for the decoder (8,8,64)
 
-    Args :
-        image (np.array) : The line vector of the encoded picture
+        Args :
+            image (np.array) : The line vector of the encoded picture
 
-    Returns :
-        (list) : The encoded picture in the right format
+        Returns :
+            (list) : The encoded picture in the right format
     """
     picture = [0] * 8
     pix = 0

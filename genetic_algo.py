@@ -213,6 +213,15 @@ def Next_Generation(pop, N, mut_rate, cross_rate) :
     return new_pop
 ####Add save of the last generation, for easy return
 def Show_pics(decoded_pic):
+    """
+    A simple function to show the pictures whithout any graphical interface
+
+        Args :
+            decoded_pic (list) : A list of the pictures we want to show, in their full format (decoded)
+
+        Returns :
+            (void) : The function only plots figures, it doesn't return anything.
+    """
     n = 10  # How many faces we will display
     plt.figure(figsize=(20, 4))
     for i in range(n):
