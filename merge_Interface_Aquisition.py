@@ -28,16 +28,16 @@ for i in nonutilisees:
 def CaractInit():
 
     #Dictionnaire des attributs selectionnés
-    listAttrInit = {"Five_o_Clock_Shadow":-1,"Arched_Eyebrows":-1,"Bald":-1,"Big_Nose":-1,"Black_Hair":-1,"Blond_Hair":-1,"Brown_Hair":-1,"Bushy_Eyebrows":-1,"Eyeglasses":-1,"Goatee":-1,"Grey_Hair":-1,"Male":-1,"Mustache":-1,"No_Beard":-1,"Pointy_Nose":-1,"Receding_Hairline":-1,"Sideburns":-1,"Straight_Hair":-1,"Wavy_Hair":-1}
+    listAttrInit = {"Sourcils_Arqués":-1,"Chauve":-1,"Gros_Nez":-1,"Sourcils_Fournis":-1,"Lunettes":-1,"Homme":-1,"Moustache":-1,"Imberbe":-1,"Nez_Pointu":-1,"Clair":-1,"Foncé":-1,"Chevelu":-1}
 
     #Liste pour les combobox
-    listLunettes=["Eyeglasses", "No_Eyeglasses"]
-    listSexe=["Male", "Female"]
-    listCoulCheveux=["Brown_Hair", "Grey_Hair", "Blond_Hair", "Black_Hair", "Other"]
-    listBarbe=["No_Beard", "Goatee", "Five_o_Clock_Shadow", "Mustache", "Sideburns", "Other"]
-    listCheveux=["Bald","Straight_Hair", "Wavy_Hair","Receding_Hairline", "Other"]
-    listNez=["Pointy_Nose", "Big_Nose", "Other"]
-    listSourcils=["Arched_Eyebrows", "Bushy_Eyebrows","Other"]
+    listLunettes=["Lunettes", "Pas_De_Lunettes"]
+    listSexe=["Homme", "Femme"]
+    listCoulCheveux=["Clair","Foncé","Autre"]
+    listBarbe=["Imberbe","Moustache", "Barbu"]
+    listCheveux=["Chauve","Chevelu"]
+    listNez=["Nez_Pointu", "Gros_Nez", "Autre"]
+    listSourcils=["Sourcils_Arqués", "Sourcils_Fournis","Autre"]
 
     def getAll():
         nonlocal listAttrInit,listCoulCheveux,listBarbe,listCheveux,listNez,listSourcils
@@ -50,14 +50,14 @@ def CaractInit():
         g=listComboLunettes.get()
         if (a=="Sexe" or b=="Couleur des cheveux" or c=="Barbe" or d=="Coupe de cheveux" or e=="Forme du nez" or f=="Forme des sourcils"):
             messagebox.showerror(title="Champs non valides", message="Veuillez selectionner tous les champs s'il vous plaît")
-        elif (d=="Bald" and b!="Autre"):
+        elif (d=="Chauve" and b!="Autre"):
             messagebox.showerror(title="Erreur de selection", message="Un individu chauve n'a pas de couleur de cheveux veuillez selectionner Autre en couleur de cheveux ")
         else :
-            if (a=="Male"):
-                listAttrInit["Male"]=1
+            if (a=="Homme"):
+                listAttrInit["Homme"]=1
 
-            if (g=="Eyeglasses"):
-                listAttrInit["Eyeglasses"]=1
+            if (g=="Lunettes"):
+                listAttrInit["Lunettes"]=1
 
             ecrireChoix(listAttrInit,listCoulCheveux,b)
             ecrireChoix(listAttrInit,listBarbe,c)
@@ -69,7 +69,7 @@ def CaractInit():
 
     def ecrireChoix(listAttrInit,listCombo,get):
         for i in listCombo :
-            if (get=="Other"):
+            if (get=="Autre"):
                 break
             if (get==i):
                 listAttrInit[i]=1
