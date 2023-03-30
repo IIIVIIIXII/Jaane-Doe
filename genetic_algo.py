@@ -4,6 +4,8 @@ from tensorflow import keras
 from random import *
 import matplotlib.pyplot as plt
 
+import merge_Interface_Aquisition as itrf
+
 
 
 
@@ -143,11 +145,11 @@ def User_action(pop,decode) :
     pictures = []
     for i in range(len(pop)) :
         pictures.append(decode.predict([pop[i].tolist()]))
-    Show_pics(pictures)
+    inp = itrf.choPho(pictures)
     """
     send the pictures to the graphical interface
     """
-    inp = input("Give your selection").split()
+    ##inp = input("Give your selection").split()
     action = int(inp[0])
     choice = []
     for i in range(len(inp)-1) :
