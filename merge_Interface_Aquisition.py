@@ -4,6 +4,9 @@ from random import randint
 from tkinter import *
 from tkinter import ttk
 import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image, ImageTk
+from tkinter import messagebox
 
 #Importation de la table
 data = pds.read_csv('list_attr_celeba.txt', delim_whitespace=True, index_col = 0) #là j'utilise les deux listes (celle raccourcie et celle entière psk y a pas le header dans la liste raccourcie)
@@ -28,7 +31,7 @@ for i in nonutilisees:
 def CaractInit():
 
     #Dictionnaire des attributs selectionnés
-    listAttrInit = {"Sourcils_Arqués":-1,"Chauve":-1,"Gros_Nez":-1,"Sourcils_Fournis":-1,"Lunettes":-1,"Homme":-1,"Moustache":-1,"Imberbe":-1,"Nez_Pointu":-1,"Clair":-1,"Foncé":-1,"Chevelu":-1}
+    listAttrInit = {"Sourcils_Arqués":-1,"Chauve":-1,"Gros_Nez":-1,"Sourcils_Fournis":-1,"Lunettes":-1,"Homme":-1,"Moustache":-1,"Imberbe":-1,"Nez_Pointu":-1,"Clair":-1,"Foncé":-1}##Chevelu necessaire ?
 
     #Liste pour les combobox
     listLunettes=["Lunettes", "Pas_De_Lunettes"]
@@ -59,9 +62,11 @@ def CaractInit():
             if (g=="Lunettes"):
                 listAttrInit["Lunettes"]=1
 
+            if (d=="Chauve"):
+                listAttrInit["Chauve"]=1
+
             ecrireChoix(listAttrInit,listCoulCheveux,b)
             ecrireChoix(listAttrInit,listBarbe,c)
-            ecrireChoix(listAttrInit,listCheveux,d)
             ecrireChoix(listAttrInit,listNez,e)
             ecrireChoix(listAttrInit,listSourcils,f)
 
@@ -214,7 +219,7 @@ def pack_image(image):
 #############################################################################################################################
 def choixPhoto(images):
     #Carcteristique Fenêtre
-    widthFen=1300
+    widthFen=1400
     heightFen=800
 
     arrayRetour=[]
@@ -228,20 +233,28 @@ def choixPhoto(images):
     dessin=Frame(choPho, bg="#689d71",height=heightFen/5,width=widthFen)
 
     #Boutons
-    """plt.imshow(images[0])
-    plt.axis('off')
-    plt.savefig("photo1.png",bbox_inches='tight',pad_inches = 0)
-    photo1 = PhotoImage(file='photo1.png')"""
 
     def savefigure(index):
         nameString="photo"+str(index+1)+".png"
-        plt.imshow(images[index])
+        plt.imshow(images[index][0])
         plt.axis('off')
         plt.savefig(nameString,bbox_inches='tight',pad_inches = 0)
-        photo = PhotoImage(file=nameString)
+        originalImg = Image.open(nameString)
+        originalImg=originalImg.resize((200,200))
+        photo = ImageTk.PhotoImage(originalImg)
         return photo
 
     photo1=savefigure(0)
+    photo2=savefigure(1)
+    photo3=savefigure(2)
+    photo4=savefigure(3)
+    photo5=savefigure(4)
+    photo6=savefigure(5)
+    photo7=savefigure(6)
+    photo8=savefigure(7)
+    photo9=savefigure(8)
+    photo10=savefigure(9)
+
     #Zone pour Boutons
     Demarcation=Frame(choPho,bg='#a8bba0')
     phoPrece=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
@@ -257,37 +270,54 @@ def choixPhoto(images):
     Pho10=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
     buttons=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
 
-    phot1=Button(Pho1,image=photo1)
-    #phot2=Button(Pho2,image=photo2)
+    phot1=Button(Pho1,image=photo1,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(1),bg="#d0d9c8")
+    phot2=Button(Pho2,image=photo2,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(2),bg="#d0d9c8")
+    phot3=Button(Pho3,image=photo3,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(3),bg="#d0d9c8")
+    phot4=Button(Pho4,image=photo4,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(4),bg="#d0d9c8")
+    phot5=Button(Pho5,image=photo5,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(5),bg="#d0d9c8")
+    phot6=Button(Pho6,image=photo6,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(6),bg="#d0d9c8")
+    phot7=Button(Pho7,image=photo7,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(7),bg="#d0d9c8")
+    phot8=Button(Pho8,image=photo8,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(8),bg="#d0d9c8")
+    phot9=Button(Pho9,image=photo9,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(9),bg="#d0d9c8")
+    phot10=Button(Pho10,image=photo10,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(10),bg="#d0d9c8")
+    photPrece=Label(phoPrece)
 
     valider=Button(buttons, text="Valider", command=lambda : debutArr(1))
     retour=Button(buttons,text="Retour", command=lambda : debutArr(-1))
     terminer=Button(buttons,text="Terminer", command=lambda : debutArr(2))
-    arrayDisplay=Entry(buttons)
+    arrayDisplay=Label(buttons,text="")
 
     def debutArr(number) :
         nonlocal arrayRetour
         if (number==2):
             arrayRetour=[arrayRetour[-1]]
+        if len(arrayRetour)>5 or len(arrayRetour)<1:
+            messagebox.showerror(title="Erreur", message="Veuillez selectionner entre un et cinq individus")
+            return -1
         arrayRetour.insert(0,number)
         choPho.destroy()
-        print(arrayRetour)
 
+    dictPhot={1:photo1,2:photo2,3:photo3,4:photo4,5:photo5,6:photo6,7:photo7,8:photo8,9:photo9,10:photo10}
+    dictBout={1:phot1,2:phot2,3:phot3,4:phot4,5:phot5,6:phot6,7:phot7,8:phot8,9:phot9,10:phot10}
     def on_click(number):
         nonlocal arrayRetour
+        nonlocal dictPhot,dictBout
         if (number in arrayRetour):
             arrayRetour.remove(number)
+            dictBout[number]["bg"]="#d0d9c8"
         else :
             arrayRetour.append(number)
+            dictBout[number]["bg"]="#a8bba0"
+        arrayDisplay["text"] = arrayRetour
+        photPrece["image"] = dictPhot[arrayRetour[-1]]
 
-        arrayDisplay.delete(0, END)
-        arrayDisplay.insert(0,arrayRetour)
 
     #Grid buttons
     buttons.grid_rowconfigure(0,weight=3)
     buttons.grid_rowconfigure(1,weight=1)
     buttons.grid_rowconfigure(2,weight=1)
     buttons.grid_rowconfigure(3,weight=1)
+    buttons.grid_rowconfigure(4,weight=1)
 
     #grid Principale
     choPho.grid_rowconfigure(0, weight=1)
@@ -316,11 +346,22 @@ def choixPhoto(images):
     Pho10.grid(row=2,column=5)
     buttons.grid(row=2,column=0)
 
+    arrayDisplay.grid(row=1, sticky="nswe")
+    valider.grid(row=2,sticky="nswe")
+    retour.grid(row=3,sticky="nswe")
+    terminer.grid(row=4,sticky="nswe")
 
-    valider.grid(row=1,sticky="nswe")
-    retour.grid(row=2,sticky="nswe")
-    terminer.grid(row=3,sticky="nswe")
     phot1.pack()
-    #phot2.pack()
+    phot2.pack()
+    phot3.pack()
+    phot4.pack()
+    phot5.pack()
+    phot6.pack()
+    phot7.pack()
+    phot8.pack()
+    phot9.pack()
+    phot10.pack()
+    photPrece.pack()
 
     choPho.mainloop()
+    return arrayRetour
