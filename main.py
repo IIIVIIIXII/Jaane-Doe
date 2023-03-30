@@ -13,6 +13,7 @@ import merge_Interface_Aquisition as itrf
 
 ## 0] importations
 load = np.loadtxt('Encoded_100_vectors.txt')
+mut_param = pds.load_csv("Mutation_normal_param.csv")
 ##[25 35 43 38 42 70 99 45 76 17] cool vector
 
 ## 1] questions
@@ -34,11 +35,10 @@ encod_size = 64
 ##init = ga.Random_population(p_size,encod_size)
 init = itrf.init_selection(load)
 print(isinstance(init.tolist(), list))##besoin que chaque génome soit une liste
-fini = ga.Genetic_Algorithm(init,mut_rate,cross_rate,p_size,decode,n_gen)[1]
+fini = ga.Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,p_size,decode,n_gen)[1]
 
 testu = decode.predict([fini[0].tolist()])
-##testu = decode.predict([test])
-plt.imshow(testu[0])
+
 plt.show()
 
 ## 3] final choice

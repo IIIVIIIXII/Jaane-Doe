@@ -181,7 +181,7 @@ def User_action(pop,decode) :
     return (action,choice)
 
 
-def Next_Generation(pop, N, mut_rate, cross_rate) :
+def Next_Generation(pop, N, mut_rate, mut_param, cross_rate) :
     """
     Recreates a full population from the pictures chosen by the user, with mutations and crossing over.
 
@@ -191,6 +191,7 @@ def Next_Generation(pop, N, mut_rate, cross_rate) :
             pop (np.array) : The population of chosen pictures
             N (int) : The size of the full population
             mut_rate (float) : The mutation rate for each gene
+            mut_param
             cross_rate (float) : The crossing over rate for each genome
 
         Returns :
@@ -233,12 +234,18 @@ def Show_pics(decoded_pic):
         ax.get_yaxis().set_visible(False)
     plt.show()
 
-def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
+def Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,N,decode,n_gen):
     """
     Selects the best pictures through a genetic algorithm
 
         Args :
             init (np.array) : The initial selection of pictures, after the questions
+            mut_rate
+            mut_param
+            cross_rate
+            N
+            decode
+            n_gen
 
         Returns :
             np.array : The picture closest to the user's memory (hopefully)
@@ -253,7 +260,7 @@ def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
         if choice[0] == 1 :## can change depending on input format
             pop_chosen = Select_pictures(pop,choice[1])
             previous_pop = np.copy(pop)
-            pop = Next_Generation(pop_chosen,N,mut_rate,cross_rate)
+            pop = Next_Generation(pop_chosen,N,mut_rate,mut_param,cross_rate)
         elif choice[0] == 2 : ##manages final picture choice
             pop = Select_pictures(pop,choice[1])
             end_picture = True
