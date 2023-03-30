@@ -145,7 +145,7 @@ def User_action(pop,decode) :
     pictures = []
     for i in range(len(pop)) :
         pictures.append(decode.predict([pop[i].tolist()]))
-    inp = itrf.choPho(pictures)
+    inp = itrf.choixPhoto(pictures)
     """
     send the pictures to the graphical interface
     """

@@ -14,7 +14,6 @@ import merge_Interface_Aquisition as itrf
 ## 0] importations
 load = np.loadtxt('Encoded_100_vectors.txt')
 ## 1] questions
-
 carac = itrf.Get_choice()
 pics = itrf.selectionlignes(carac)
 lis_pics = itrf.diximages(pics)##picks the same image multiple times
