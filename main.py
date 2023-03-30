@@ -13,7 +13,8 @@ import merge_Interface_Aquisition as itrf
 
 ## 0] importations
 load = np.loadtxt('Encoded_100_vectors.txt')
-mut_param = pds.load_csv("Mutation_normal_param.csv")
+mut_param = pds.read_csv("Mutation_normal_param.csv", header = 0, index_col = 0)
+print(mut_param.head())
 ##[25 35 43 38 42 70 99 45 76 17] cool vector
 
 ## 1] questions

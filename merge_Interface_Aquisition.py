@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter import ttk
 import numpy as np
 
+"""
 #Importation de la table
 data = pds.read_csv('list_attr_celeba.txt', delim_whitespace=True, index_col = 0) #là j'utilise les deux listes (celle raccourcie et celle entière psk y a pas le header dans la liste raccourcie)
 #print(data)
@@ -13,9 +14,10 @@ data = pds.read_csv('list_attr_celeba.txt', delim_whitespace=True, index_col = 0
 nonutilisees = ['Double_Chin', 'Bags_Under_Eyes', 'Bangs', 'Big_Lips', 'Chubby', 'High_Cheekbones', 'Narrow_Eyes', 'Attractive', 'Oval_Face', 'Pale_Skin', 'Rosy_Cheeks', 'Smiling', 'Wearing_Earrings', 'Wearing_Hat', 'Wearing_Lipstick', 'Wearing_Necklace', 'Wearing_Necktie', 'Heavy_Makeup', 'Mouth_Slightly_Open', 'Blurry']
 for i in nonutilisees:
     data = data.drop(i, axis=1)
-
+"""
+data = pds.read_csv('Total_Base_Pics_Fr.csv', header = 0, index_col = 0)
 #Voila ce qu'on obtient
-#print(data)
+print(data.head())
 
 #Pour la colonne Blurry on peut aussi decider de supprimer les lignes des images floues
 #Ca c'est une question a demander a Juliette
@@ -175,10 +177,18 @@ def selectionlignes(choix):
     caractere = list(choix.columns.values)
     c = '=='.join((str(caractere[0]),str(int(choix[caractere[0]]))))
     for i in range(len(caractere)-1):
-        a = c
-        b = '=='.join((str(caractere[i+1]),str(int(choix[caractere[i+1]]))))
-        c = ' and '.join((a, b))
+        if str(caractere[i+1]) != 'Clair' and str(caractere[i+1]) != 'Foncé' :
+            a = c
+            b = '=='.join((str(caractere[i+1]),str(int(choix[caractere[i+1]]))))
+            c = ' and '.join((a, b))
+        if choix['Chauve'] == -1 and choix['Clair'] == -1 and choix['Foncé'] == -1 :
+            c += " and (Brown_Hair == " + str(-1) + " or " + "Black_Hair == " + str(-1) + ") and " + "(Blond_Hair == " + str(-1) + " or " + "Grey_Hair == " + str(-1) + ")"
+        elif choix['Chauve'] == -1 and choix['Clair'] == 1 and choix['Foncé'] == -1 :
+            c += " and (Brown_Hair == " + str(-1) + " or " + "Black_Hair == " + str(-1) + ") and " + "(Blond_Hair == " + str(1) + " or " + "Grey_Hair == " + str(1) + ")"
+        elif choix['Chauve'] == -1 and choix['Clair'] == -1 and choix['Foncé'] == 1 :
+            c += " and (Brown_Hair == " + str(1) + " or " + "Black_Hair == " + str(1) + ") and " + "(Blond_Hair == " + str(-1) + " or " + "Grey_Hair == " + str(-1) + ")"
     newdata = data.query(str(c))
+    ##a tester
     return newdata
 #la je suis bloquee parce qu'il y a une erreur que je comprends pas
 """
