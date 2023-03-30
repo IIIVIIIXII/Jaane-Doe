@@ -210,3 +210,117 @@ def pack_image(image):
                 picture[i][j][k] = image[pix]
                 pix +=1
     return picture
+
+#############################################################################################################################
+def choixPhoto(images):
+    #Carcteristique Fenêtre
+    widthFen=1300
+    heightFen=800
+
+    arrayRetour=[]
+
+    choPho = Tk()
+    choPho.title('Choix Photo')
+    choPho.geometry(str(widthFen)+'x'+str(heightFen))
+    choPho.configure(bg='#d0d9c8')
+
+    #Header
+    dessin=Frame(choPho, bg="#689d71",height=heightFen/5,width=widthFen)
+
+    #Boutons
+    """plt.imshow(images[0])
+    plt.axis('off')
+    plt.savefig("photo1.png",bbox_inches='tight',pad_inches = 0)
+    photo1 = PhotoImage(file='photo1.png')"""
+
+    def savefigure(index):
+        nameString="photo"+str(index+1)+".png"
+        plt.imshow(images[index])
+        plt.axis('off')
+        plt.savefig(nameString,bbox_inches='tight',pad_inches = 0)
+        photo = PhotoImage(file=nameString)
+        return photo
+
+    photo1=savefigure(0)
+    #Zone pour Boutons
+    Demarcation=Frame(choPho,bg='#a8bba0')
+    phoPrece=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho1=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho2=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho3=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho4=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho5=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho6=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho7=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho8=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho9=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho10=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    buttons=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+
+    phot1=Button(Pho1,image=photo1)
+    #phot2=Button(Pho2,image=photo2)
+
+    valider=Button(buttons, text="Valider", command=lambda : debutArr(1))
+    retour=Button(buttons,text="Retour", command=lambda : debutArr(-1))
+    terminer=Button(buttons,text="Terminer", command=lambda : debutArr(2))
+    arrayDisplay=Entry(buttons)
+
+    def debutArr(number) :
+        nonlocal arrayRetour
+        if (number==2):
+            arrayRetour=[arrayRetour[-1]]
+        arrayRetour.insert(0,number)
+        choPho.destroy()
+        print(arrayRetour)
+
+    def on_click(number):
+        nonlocal arrayRetour
+        if (number in arrayRetour):
+            arrayRetour.remove(number)
+        else :
+            arrayRetour.append(number)
+
+        arrayDisplay.delete(0, END)
+        arrayDisplay.insert(0,arrayRetour)
+
+    #Grid buttons
+    buttons.grid_rowconfigure(0,weight=3)
+    buttons.grid_rowconfigure(1,weight=1)
+    buttons.grid_rowconfigure(2,weight=1)
+    buttons.grid_rowconfigure(3,weight=1)
+
+    #grid Principale
+    choPho.grid_rowconfigure(0, weight=1)
+    choPho.grid_rowconfigure(1, weight=2)
+    choPho.grid_rowconfigure(2, weight=2)
+    choPho.grid_columnconfigure(0, weight=1)
+    choPho.grid_columnconfigure(1, weight=1)
+    choPho.grid_columnconfigure(2, weight=1)
+    choPho.grid_columnconfigure(3, weight=1)
+    choPho.grid_columnconfigure(4, weight=1)
+    choPho.grid_columnconfigure(5, weight=1)
+
+    #Placement sur la grid
+    dessin.grid(row=0,column=0,columnspan= 6,sticky="nswe")
+    Demarcation.grid(row=1,column=0,rowspan=2,sticky="nswe")
+    phoPrece.grid(row=1,column=0)
+    Pho1.grid(row=1,column=1)
+    Pho2.grid(row=1,column=2)
+    Pho3.grid(row=1,column=3)
+    Pho4.grid(row=1,column=4)
+    Pho5.grid(row=1,column=5)
+    Pho6.grid(row=2,column=1)
+    Pho7.grid(row=2,column=2)
+    Pho8.grid(row=2,column=3)
+    Pho9.grid(row=2,column=4)
+    Pho10.grid(row=2,column=5)
+    buttons.grid(row=2,column=0)
+
+
+    valider.grid(row=1,sticky="nswe")
+    retour.grid(row=2,sticky="nswe")
+    terminer.grid(row=3,sticky="nswe")
+    phot1.pack()
+    #phot2.pack()
+
+    choPho.mainloop()
