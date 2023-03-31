@@ -9,7 +9,7 @@ data = pds.read_csv('list_attr_celeba.txt', delim_whitespace=True, index_col = 0
 #print(data)
 
 #Tri des colonnes (en ne gardant que celles que l'ont va utiliser)
-nonutilisees = ['Double_Chin', 'Bags_Under_Eyes', 'Bangs', 'Big_Lips', 'Chubby', 'High_Cheekbones', 'Narrow_Eyes', 'Attractive', 'Oval_Face', 'Pale_Skin', 'Rosy_Cheeks', 'Smiling', 'Wearing_Earrings', 'Wearing_Hat', 'Wearing_Lipstick', 'Wearing_Necklace', 'Wearing_Necktie', 'Heavy_Makeup', 'Mouth_Slightly_Open', 'Blurry']
+nonutilisees = ['Double_Chin','Five_o_Clock_Shadow','Goatee','Sideburns','Straight_Hair','Wavy_Hair','Receding_Hairline', 'Bags_Under_Eyes', 'Bangs', 'Big_Lips', 'Chubby', 'High_Cheekbones', 'Narrow_Eyes', 'Attractive', 'Oval_Face', 'Pale_Skin', 'Rosy_Cheeks', 'Smiling', 'Wearing_Earrings', 'Wearing_Hat', 'Wearing_Lipstick', 'Wearing_Necklace', 'Wearing_Necktie', 'Heavy_Makeup', 'Mouth_Slightly_Open']
 for i in nonutilisees:
     data = data.drop(i, axis=1)
 
@@ -20,7 +20,7 @@ for i in nonutilisees:
 #Ca c'est une question a demander a Juliette
 
 #Fichier importe par Arnaud
-data.to_csv("new_file.csv")
+data.to_csv("Base_pictures_blurry.csv")
 
 ################################# PARTIE ARNAUD #########################
 
@@ -28,13 +28,13 @@ data.to_csv("new_file.csv")
 
 #Selection des images
 #choix = pds.read_csv('fichierdarnaud.csv', delim_whitespace=True, index_col = 0) #là j'utilise les deux listes (celle raccourcie et celle entière psk y a pas le header dans la liste raccourcie)
-
+'''
 #En attendant on cree un fichier test
 columns = list(data.columns.values)
 test = [[-1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1]]
 choix = pds.DataFrame(data=test, columns = columns, index=None)
 choix
-
+'''
 def selectionlignes(choix):
     """
     Entrée :
@@ -53,7 +53,7 @@ def selectionlignes(choix):
 #la je suis bloquee parce qu'il y a une erreur que je comprends pas
 
 #test
-selectionimages = selectionlignes(choix)
+##selectionimages = selectionlignes(choix)
 
 #selection des 10 images aleatoires
 def diximages(selectionimages):
@@ -64,6 +64,6 @@ def diximages(selectionimages):
     return imagesdepart
 
 #test
-listeimagesdepart = diximages(selectionimages)
+##listeimagesdepart = diximages(selectionimages)
 
 ###################################### PARTIE ARNAUD ######################

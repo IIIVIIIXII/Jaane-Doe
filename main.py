@@ -18,18 +18,18 @@ print(mut_param.head())
 ##[25 35 43 38 42 70 99 45 76 17] cool vector
 
 ## 1] questions
-"""
+
 carac = itrf.Get_choice()
 pics = itrf.selectionlignes(carac)
 lis_pics = itrf.diximages(pics)##picks the same image multiple times
 print(lis_pics)
-"""
+
 ## 2] genetic algorithm
 
 decode = keras.models.load_model("decoder_model7.h5")
 
 mut_rate = 0.1
-cross_rate = 0.9
+cross_rate = 0.8
 p_size = 10
 n_gen = 10
 encod_size = 64
@@ -39,7 +39,8 @@ print(isinstance(init.tolist(), list))##besoin que chaque génome soit une liste
 fini = ga.Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,p_size,decode,n_gen)[1]
 
 testu = decode.predict([fini[0].tolist()])
-
+##testu = decode.predict([test])
+plt.imshow(testu[0])
 plt.show()
 
 ## 3] final choice

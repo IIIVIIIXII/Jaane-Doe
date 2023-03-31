@@ -4,6 +4,9 @@ from random import randint
 from tkinter import *
 from tkinter import ttk
 import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image, ImageTk
+from tkinter import messagebox
 
 """
 #Importation de la table
@@ -36,16 +39,16 @@ def CaractInit():
     """
 
     #Dictionnaire des attributs selectionnés
-    listAttrInit = {"Five_o_Clock_Shadow":-1,"Arched_Eyebrows":-1,"Bald":-1,"Big_Nose":-1,"Black_Hair":-1,"Blond_Hair":-1,"Brown_Hair":-1,"Bushy_Eyebrows":-1,"Eyeglasses":-1,"Goatee":-1,"Grey_Hair":-1,"Male":-1,"Mustache":-1,"No_Beard":-1,"Pointy_Nose":-1,"Receding_Hairline":-1,"Sideburns":-1,"Straight_Hair":-1,"Wavy_Hair":-1}
+    listAttrInit = {"Sourcils_Arqués":-1,"Chauve":-1,"Gros_Nez":-1,"Sourcils_Fournis":-1,"Lunettes":-1,"Homme":-1,"Moustache":-1,"Imberbe":-1,"Nez_Pointu":-1,"Clair":-1,"Foncé":-1}##Chevelu necessaire ?
 
     #Liste pour les combobox
-    listLunettes=["Eyeglasses", "No_Eyeglasses"]
-    listSexe=["Male", "Female"]
-    listCoulCheveux=["Brown_Hair", "Grey_Hair", "Blond_Hair", "Black_Hair", "Other"]
-    listBarbe=["No_Beard", "Goatee", "Five_o_Clock_Shadow", "Mustache", "Sideburns", "Other"]
-    listCheveux=["Bald","Straight_Hair", "Wavy_Hair","Receding_Hairline", "Other"]
-    listNez=["Pointy_Nose", "Big_Nose", "Other"]
-    listSourcils=["Arched_Eyebrows", "Bushy_Eyebrows","Other"]
+    listLunettes=["Lunettes", "Pas_De_Lunettes"]
+    listSexe=["Homme", "Femme"]
+    listCoulCheveux=["Clair","Foncé","Autre"]
+    listBarbe=["Imberbe","Moustache", "Barbu"]
+    listCheveux=["Chauve","Chevelu"]
+    listNez=["Nez_Pointu", "Gros_Nez", "Autre"]
+    listSourcils=["Sourcils_Arqués", "Sourcils_Fournis","Autre"]
 
     def getAll():
         nonlocal listAttrInit,listCoulCheveux,listBarbe,listCheveux,listNez,listSourcils
@@ -58,18 +61,20 @@ def CaractInit():
         g=listComboLunettes.get()
         if (a=="Sexe" or b=="Couleur des cheveux" or c=="Barbe" or d=="Coupe de cheveux" or e=="Forme du nez" or f=="Forme des sourcils"):
             messagebox.showerror(title="Champs non valides", message="Veuillez selectionner tous les champs s'il vous plaît")
-        elif (d=="Bald" and b!="Autre"):
+        elif (d=="Chauve" and b!="Autre"):
             messagebox.showerror(title="Erreur de selection", message="Un individu chauve n'a pas de couleur de cheveux veuillez selectionner Autre en couleur de cheveux ")
         else :
-            if (a=="Male"):
-                listAttrInit["Male"]=1
+            if (a=="Homme"):
+                listAttrInit["Homme"]=1
 
-            if (g=="Eyeglasses"):
-                listAttrInit["Eyeglasses"]=1
+            if (g=="Lunettes"):
+                listAttrInit["Lunettes"]=1
+
+            if (d=="Chauve"):
+                listAttrInit["Chauve"]=1
 
             ecrireChoix(listAttrInit,listCoulCheveux,b)
             ecrireChoix(listAttrInit,listBarbe,c)
-            ecrireChoix(listAttrInit,listCheveux,d)
             ecrireChoix(listAttrInit,listNez,e)
             ecrireChoix(listAttrInit,listSourcils,f)
 
@@ -77,7 +82,7 @@ def CaractInit():
 
     def ecrireChoix(listAttrInit,listCombo,get):
         for i in listCombo :
-            if (get=="Other"):
+            if (get=="Autre"):
                 break
             if (get==i):
                 listAttrInit[i]=1
@@ -252,3 +257,153 @@ def pack_image(image):
                 picture[i][j][k] = image[pix]
                 pix +=1
     return picture
+
+#############################################################################################################################
+def choixPhoto(images):
+    #Carcteristique Fenêtre
+    widthFen=1400
+    heightFen=800
+
+    arrayRetour=[]
+
+    choPho = Tk()
+    choPho.title('Choix Photo')
+    choPho.geometry(str(widthFen)+'x'+str(heightFen))
+    choPho.configure(bg='#d0d9c8')
+
+    #Header
+    dessin=Frame(choPho, bg="#689d71",height=heightFen/5,width=widthFen)
+
+    #Boutons
+
+    def savefigure(index):
+        nameString="photo"+str(index+1)+".png"
+        plt.imshow(images[index][0])
+        plt.axis('off')
+        plt.savefig(nameString,bbox_inches='tight',pad_inches = 0)
+        originalImg = Image.open(nameString)
+        originalImg=originalImg.resize((200,200))
+        photo = ImageTk.PhotoImage(originalImg)
+        return photo
+
+    photo1=savefigure(0)
+    photo2=savefigure(1)
+    photo3=savefigure(2)
+    photo4=savefigure(3)
+    photo5=savefigure(4)
+    photo6=savefigure(5)
+    photo7=savefigure(6)
+    photo8=savefigure(7)
+    photo9=savefigure(8)
+    photo10=savefigure(9)
+
+    #Zone pour Boutons
+    Demarcation=Frame(choPho,bg='#a8bba0')
+    phoPrece=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho1=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho2=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho3=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho4=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho5=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho6=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho7=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho8=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho9=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    Pho10=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+    buttons=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
+
+    phot1=Button(Pho1,image=photo1,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(1),bg="#d0d9c8")
+    phot2=Button(Pho2,image=photo2,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(2),bg="#d0d9c8")
+    phot3=Button(Pho3,image=photo3,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(3),bg="#d0d9c8")
+    phot4=Button(Pho4,image=photo4,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(4),bg="#d0d9c8")
+    phot5=Button(Pho5,image=photo5,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(5),bg="#d0d9c8")
+    phot6=Button(Pho6,image=photo6,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(6),bg="#d0d9c8")
+    phot7=Button(Pho7,image=photo7,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(7),bg="#d0d9c8")
+    phot8=Button(Pho8,image=photo8,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(8),bg="#d0d9c8")
+    phot9=Button(Pho9,image=photo9,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(9),bg="#d0d9c8")
+    phot10=Button(Pho10,image=photo10,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(10),bg="#d0d9c8")
+    photPrece=Label(phoPrece)
+
+    valider=Button(buttons, text="Valider", command=lambda : debutArr(1))
+    retour=Button(buttons,text="Retour", command=lambda : debutArr(-1))
+    terminer=Button(buttons,text="Terminer", command=lambda : debutArr(2))
+    arrayDisplay=Label(buttons,text="")
+
+    def debutArr(number) :
+        nonlocal arrayRetour
+        if (number==2):
+            arrayRetour=[arrayRetour[-1]]
+        if len(arrayRetour)>5 or len(arrayRetour)<1:
+            messagebox.showerror(title="Erreur", message="Veuillez selectionner entre un et cinq individus")
+            return -1
+        arrayRetour.insert(0,number)
+        choPho.destroy()
+
+    dictPhot={1:photo1,2:photo2,3:photo3,4:photo4,5:photo5,6:photo6,7:photo7,8:photo8,9:photo9,10:photo10}
+    dictBout={1:phot1,2:phot2,3:phot3,4:phot4,5:phot5,6:phot6,7:phot7,8:phot8,9:phot9,10:phot10}
+    def on_click(number):
+        nonlocal arrayRetour
+        nonlocal dictPhot,dictBout
+        if (number in arrayRetour):
+            arrayRetour.remove(number)
+            dictBout[number]["bg"]="#d0d9c8"
+        else :
+            arrayRetour.append(number)
+            dictBout[number]["bg"]="#a8bba0"
+        arrayDisplay["text"] = arrayRetour
+        photPrece["image"] = dictPhot[arrayRetour[-1]]
+
+
+    #Grid buttons
+    buttons.grid_rowconfigure(0,weight=3)
+    buttons.grid_rowconfigure(1,weight=1)
+    buttons.grid_rowconfigure(2,weight=1)
+    buttons.grid_rowconfigure(3,weight=1)
+    buttons.grid_rowconfigure(4,weight=1)
+
+    #grid Principale
+    choPho.grid_rowconfigure(0, weight=1)
+    choPho.grid_rowconfigure(1, weight=2)
+    choPho.grid_rowconfigure(2, weight=2)
+    choPho.grid_columnconfigure(0, weight=1)
+    choPho.grid_columnconfigure(1, weight=1)
+    choPho.grid_columnconfigure(2, weight=1)
+    choPho.grid_columnconfigure(3, weight=1)
+    choPho.grid_columnconfigure(4, weight=1)
+    choPho.grid_columnconfigure(5, weight=1)
+
+    #Placement sur la grid
+    dessin.grid(row=0,column=0,columnspan= 6,sticky="nswe")
+    Demarcation.grid(row=1,column=0,rowspan=2,sticky="nswe")
+    phoPrece.grid(row=1,column=0)
+    Pho1.grid(row=1,column=1)
+    Pho2.grid(row=1,column=2)
+    Pho3.grid(row=1,column=3)
+    Pho4.grid(row=1,column=4)
+    Pho5.grid(row=1,column=5)
+    Pho6.grid(row=2,column=1)
+    Pho7.grid(row=2,column=2)
+    Pho8.grid(row=2,column=3)
+    Pho9.grid(row=2,column=4)
+    Pho10.grid(row=2,column=5)
+    buttons.grid(row=2,column=0)
+
+    arrayDisplay.grid(row=1, sticky="nswe")
+    valider.grid(row=2,sticky="nswe")
+    retour.grid(row=3,sticky="nswe")
+    terminer.grid(row=4,sticky="nswe")
+
+    phot1.pack()
+    phot2.pack()
+    phot3.pack()
+    phot4.pack()
+    phot5.pack()
+    phot6.pack()
+    phot7.pack()
+    phot8.pack()
+    phot9.pack()
+    phot10.pack()
+    photPrece.pack()
+
+    choPho.mainloop()
+    return arrayRetour

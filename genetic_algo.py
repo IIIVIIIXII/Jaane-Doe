@@ -4,7 +4,8 @@ from tensorflow import keras
 from random import *
 import matplotlib.pyplot as plt
 
-from merge_Interface_Aquisition import pack_image
+import merge_Interface_Aquisition as itrf
+
 
 
 
@@ -98,8 +99,6 @@ def Mutation(pop, mut_rate, mut_param): ##besoin savoir composition vecteur
                         """
                         pour test
                         """
-
-
     return(new_pop)
 
 def Crossing_Over(pop, cross_rate):
@@ -172,12 +171,11 @@ def User_action(pop,decode) :
     pictures = []
     for i in range(len(pop)) :
         pictures.append(decode.predict([pop[i].tolist()]))
-
-    Show_pics(pictures)
+    inp = itrf.choixPhoto(pictures)
     """
     send the pictures to the graphical interface
     """
-    inp = input("Give your selection").split()
+    ##inp = input("Give your selection").split()
     action = int(inp[0])
     choice = []
     for i in range(len(inp)-1) :
