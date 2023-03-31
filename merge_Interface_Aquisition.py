@@ -39,7 +39,7 @@ def CaractInit():
     """
 
     #Dictionnaire des attributs selectionnés
-    listAttrInit = {"Sourcils_Arqués":-1,"Chauve":-1,"Gros_Nez":-1,"Sourcils_Fournis":-1,"Lunettes":-1,"Homme":-1,"Moustache":-1,"Imberbe":-1,"Nez_Pointu":-1,"Clair":-1,"Foncé":-1}##Chevelu necessaire ?
+    listAttrInit = {"Sourcils_Arqués":-1,"Chauve":-1,"Gros_Nez":-1,"Sourcils_Fournis":-1,"Lunettes":-1,"Homme":-1,"Moustache":-1,"Imberbe":-1,"Nez_Pointu":-1,"Clair":-1,"Foncé":-1}
 
     #Liste pour les combobox
     listLunettes=["Lunettes", "Pas_De_Lunettes"]
@@ -74,11 +74,19 @@ def CaractInit():
                 listAttrInit["Chauve"]=1
 
             ecrireChoix(listAttrInit,listCoulCheveux,b)
-            ecrireChoix(listAttrInit,listBarbe,c)
+            ecrireChoixBarbe(listAttrInit,listBarbe,c)
             ecrireChoix(listAttrInit,listNez,e)
             ecrireChoix(listAttrInit,listSourcils,f)
 
             selectCaract.destroy()
+
+    def ecrireChoixBarbe(listAttrInit,listCombo,get):
+        for i in listCombo :
+            if (get=="Barbu"):
+                break
+            if (get==i):
+                listAttrInit[i]=1
+                break
 
     def ecrireChoix(listAttrInit,listCombo,get):
         for i in listCombo :
@@ -186,14 +194,15 @@ def selectionlignes(choix):
             a = c
             b = '=='.join((str(caractere[i+1]),str(int(choix[caractere[i+1]]))))
             c = ' and '.join((a, b))
-        if choix['Chauve'] == -1 and choix['Clair'] == -1 and choix['Foncé'] == -1 :
-            c += " and (Brown_Hair == " + str(-1) + " or " + "Black_Hair == " + str(-1) + ") and " + "(Blond_Hair == " + str(-1) + " or " + "Grey_Hair == " + str(-1) + ")"
-        elif choix['Chauve'] == -1 and choix['Clair'] == 1 and choix['Foncé'] == -1 :
-            c += " and (Brown_Hair == " + str(-1) + " or " + "Black_Hair == " + str(-1) + ") and " + "(Blond_Hair == " + str(1) + " or " + "Grey_Hair == " + str(1) + ")"
-        elif choix['Chauve'] == -1 and choix['Clair'] == -1 and choix['Foncé'] == 1 :
-            c += " and (Brown_Hair == " + str(1) + " or " + "Black_Hair == " + str(1) + ") and " + "(Blond_Hair == " + str(-1) + " or " + "Grey_Hair == " + str(-1) + ")"
+        if choix.iloc[0]['Chauve'] == -1 and choix.iloc[0]['Clair'] == -1 and choix.iloc[0]['Foncé'] == -1 :
+            c += " and (Cheveux_Bruns == " + str(-1) + " or " + "Cheveux_Noirs == " + str(-1) + ") and " + "(Cheveux_Blonds == " + str(-1) + " or " + "Cheveux_Gris == " + str(-1) + ")"
+        elif choix.iloc[0]['Chauve'] == -1 and choix.iloc[0]['Clair'] == 1 and choix.iloc[0]['Foncé'] == -1 :
+            c += " and (Cheveux_Bruns == " + str(-1) + " or " + "Cheveux_Noirs == " + str(-1) + ") and " + "(Cheveux_Blonds == " + str(1) + " or " + "Cheveux_Gris == " + str(1) + ")"
+        elif choix.iloc[0]['Chauve'] == -1 and choix.iloc[0]['Clair'] == -1 and choix.iloc[0]['Foncé'] == 1 :
+            c += " and (Cheveux_Bruns == " + str(1) + " or " + "Cheveux_Noirs == " + str(1) + ") and " + "(Cheveux_Blonds == " + str(-1) + " or " + "Cheveux_Gris == " + str(-1) + ")"
     newdata = data.query(str(c))
-    ##a tester
+    print(data.query("Chauve == 1").head())
+    print(str(c))
     return newdata
 #la je suis bloquee parce qu'il y a une erreur que je comprends pas
 """
