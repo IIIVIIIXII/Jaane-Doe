@@ -88,14 +88,12 @@ def Mutation(pop, mut_rate, mut_param): ##besoin savoir composition vecteur
     new_pop = np.copy(pop)
     j = 0
     for genome in new_pop :##besoin copie profonde ?
-        for channel in genome :
-            for vector in channel :
-                for i in range(len(vector)) :
+        for i in len(genome) :
                     if (random() < mut_rate) :
                         """
                         pour test
                         """
-                        vector[i] = np.random.normal(loc = mut_param.iloc[j][0], scale = mut_param.iloc[j][1])
+                        genome[i] = np.random.normal(loc = mut_param.iloc[j][0], scale = mut_param.iloc[j][1])
                         """
                         pour test
                         """
