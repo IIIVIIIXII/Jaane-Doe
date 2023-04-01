@@ -150,8 +150,8 @@ def Crossing_Over(pop, cross_rate):
             flat_genome[posc:len(flat_genome)] = flat_indc[posc:len(flat_indc)]
             flat_indc[posc:len(flat_indc)] = tmp
 
-            new_pop[i] = pack_image(flat_genome)
-            new_pop[indc] = pack_image(flat_indc)
+            new_pop[i] = itrf.pack_image(flat_genome)
+            new_pop[indc] = itrf.pack_image(flat_indc)
 
         return new_pop
 

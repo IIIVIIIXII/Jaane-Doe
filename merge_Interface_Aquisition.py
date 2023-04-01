@@ -20,7 +20,7 @@ for i in nonutilisees:
 """
 data = pds.read_csv('Total_Base_Pics_Fr.csv', header = 0, index_col = 0)
 #Voila ce qu'on obtient
-print(data.head())
+print(data.query('Chauve == 1'))
 
 #Pour la colonne Blurry on peut aussi decider de supprimer les lignes des images floues
 #Ca c'est une question a demander a Juliette
@@ -201,7 +201,7 @@ def selectionlignes(choix):
         elif choix.iloc[0]['Chauve'] == -1 and choix.iloc[0]['Clair'] == -1 and choix.iloc[0]['Foncé'] == 1 :
             c += " and (Cheveux_Bruns == " + str(1) + " or " + "Cheveux_Noirs == " + str(1) + ") and " + "(Cheveux_Blonds == " + str(-1) + " or " + "Cheveux_Gris == " + str(-1) + ")"
     newdata = data.query(str(c))
-    print(data.query("Chauve == 1").head())
+    print(data.query("Chauve == 1"))
     print(str(c))
     return newdata
 #la je suis bloquee parce qu'il y a une erreur que je comprends pas
@@ -342,14 +342,15 @@ def choixPhoto(images):
         nonlocal arrayRetour
         if (number==2):
             arrayRetour=[arrayRetour[-1]]
-        if len(arrayRetour)>5 or len(arrayRetour)<1:
+        if number != -1 and (len(arrayRetour)>5 or len(arrayRetour)<1):
             messagebox.showerror(title="Erreur", message="Veuillez selectionner entre un et cinq individus")
             return -1
         arrayRetour.insert(0,number)
-        choPho.destroy()
+        choPho.quit()
 
     dictPhot={1:photo1,2:photo2,3:photo3,4:photo4,5:photo5,6:photo6,7:photo7,8:photo8,9:photo9,10:photo10}
     dictBout={1:phot1,2:phot2,3:phot3,4:phot4,5:phot5,6:phot6,7:phot7,8:phot8,9:phot9,10:phot10}
+
     def on_click(number):
         nonlocal arrayRetour
         nonlocal dictPhot,dictBout
@@ -415,4 +416,5 @@ def choixPhoto(images):
     photPrece.pack()
 
     choPho.mainloop()
+    choPho.destroy()
     return arrayRetour
