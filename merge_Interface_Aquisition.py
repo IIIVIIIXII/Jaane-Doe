@@ -104,7 +104,7 @@ def CaractInit():
 
     #Header
     dessin=Frame(selectCaract, bg="#689d71")
-
+    explication=Label(dessin,text="Veuillez selectionner les caracteristiques \n de l'aggresseur, si vous choisissez chauve en coupe de cheveux,\n selectionnez autre en couleur de cheveux",bg="#689d71",foreground='white')
     #Style Combobox
     style= ttk.Style()
     style.theme_use('clam')
@@ -154,6 +154,7 @@ def CaractInit():
     listComboSourcils.grid(column=1, row=3)
     listComboLunettes.grid(column=0, row=4)
     valider.grid(column=1,row=4)
+    explication.pack(side='right')
 
     # affichage de la fenêtre
     selectCaract.mainloop()
@@ -284,11 +285,11 @@ def choixPhoto(images):
 
     #Header
     dessin=Frame(choPho, bg="#689d71",height=heightFen/5,width=widthFen)
-
+    explication=Label(dessin,text="Veuillez selectionner\n les photos qui se rapprochent le plus\n de votre agresseur, entre 1 et 5 puis cliquez sur continuer\n les photos selectionnées sont surlignées\n si la derniere photo selctionnée vous plait, \n cliquez sur terminer\n si vous desirez revenir a la generation \n precedente, cliquez sur retour",bg="#689d71",foreground='white')
     #Boutons
 
     def savefigure(index):
-        nameString="photo"+str(index+1)+".png"
+        nameString="./photos/photo"+str(index+1)+".png"
         plt.imshow(images[index][0])
         plt.axis('off')
         plt.savefig(nameString,bbox_inches='tight',pad_inches = 0)
@@ -340,18 +341,24 @@ def choixPhoto(images):
     terminer=Button(buttons,text="Terminer", command=lambda : debutArr(2))
     arrayDisplay=Label(buttons,text="")
 
+    dictPhot={1:photo1,2:photo2,3:photo3,4:photo4,5:photo5,6:photo6,7:photo7,8:photo8,9:photo9,10:photo10}
+    dictBout={1:phot1,2:phot2,3:phot3,4:phot4,5:phot5,6:phot6,7:phot7,8:phot8,9:phot9,10:phot10}
+
     def debutArr(number) :
-        nonlocal arrayRetour
+        nonlocal arrayRetour,dictPhot
         if (number==2):
-            arrayRetour=[arrayRetour[-1]]
+            fin=phoFin(dictPhot[arrayRetour[-1]])
+            if (fin == 1):
+                choPho.quit()
+            else:
+                del arrayRetour[0]
+                return -1
         if number != -1 and (len(arrayRetour)>5 or len(arrayRetour)<1):
             messagebox.showerror(title="Erreur", message="Veuillez selectionner entre un et cinq individus")
             return -1
         arrayRetour.insert(0,number)
         choPho.quit()
 
-    dictPhot={1:photo1,2:photo2,3:photo3,4:photo4,5:photo5,6:photo6,7:photo7,8:photo8,9:photo9,10:photo10}
-    dictBout={1:phot1,2:phot2,3:phot3,4:phot4,5:phot5,6:phot6,7:phot7,8:phot8,9:phot9,10:phot10}
 
     def on_click(number):
         nonlocal arrayRetour
@@ -416,7 +423,58 @@ def choixPhoto(images):
     phot9.pack()
     phot10.pack()
     photPrece.pack()
+    explication.pack(side='right')
 
     choPho.mainloop()
     choPho.destroy()
     return arrayRetour
+
+def phoFin(imagef):
+
+    widthFen=1300
+    heightFen=800
+    fin=0
+
+    phof=Toplevel()
+    phof.title('Photo finale')
+    phof.geometry(str(widthFen)+'x'+str(heightFen))
+    phof.configure(bg='#d0d9c8')
+
+    imagef=imagef._PhotoImage__photo.zoom(3)
+
+    dessin=Frame(phof, bg="#689d71",height=heightFen/5,width=widthFen)
+    explication=Label(dessin,text="Pour choisir une autre photo \n cliquez sur retour, pour enregistrer la photo (criminel.png)\nappuyez sur Telecharger puis fermer",bg="#689d71",foreground='white')
+    buttons=Frame(phof)
+    displayPhoto=Frame(phof)
+    imagefin=Label(displayPhoto,image=imagef)
+
+    bretour=Button(buttons,text="Retour a la selection", command=lambda : retour())
+    telecharger=Button(buttons,text="Telecharger puis fermer", command=lambda : telecharger())
+
+    phof.grid_rowconfigure(0, weight=1)
+    phof.grid_rowconfigure(1, weight=3)
+    phof.grid_rowconfigure(2, weight=1)
+    phof.grid_columnconfigure(0, weight=1)
+
+    dessin.grid(row=0,column=0,columnspan= 1,sticky="nswe")
+    displayPhoto.grid(row=1, column=0)
+    imagefin.pack()
+    buttons.grid(row=2,column=0)
+    bretour.pack(side='left')
+    telecharger.pack(side='right')
+    explication.pack(side='right')
+
+    def retour():
+        phof.quit()
+        fin=0
+
+    def telecharger():
+        nonlocal fin
+        fin=1
+        phof.quit()
+        imagef.write('criminel.png',format='png')
+
+    phof.mainloop()
+    phof.destroy()
+
+    return fin
