@@ -13,7 +13,8 @@ import merge_Interface_Aquisition as itrf
 
 
 ## 0] importations
-load = np.loadtxt('encoded_imgs2.txt')
+load = np.loadtxt('encoded_imgs3.txt')
+#load = np.loadtxt('Encoded_100_vectors.txt')
 mut_param = pds.read_csv("Mutation_normal_param.csv", header = 0, index_col = 0)
 print(mut_param.head())
 ##[25 35 43 38 42 70 99 45 76 17] cool vector
@@ -33,7 +34,8 @@ while not_selec :
 
 ## 2] genetic algorithm
 
-decode = keras.models.load_model("decoderModel1.h5")
+decode = keras.models.load_model("decoderModel3.h5")
+#decode = keras.models.load_model("decoder_model7.h5")
 
 mut_rate = 0.1
 cross_rate = 0.8

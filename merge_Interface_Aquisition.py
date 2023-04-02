@@ -243,7 +243,9 @@ def init_selection(pic_list):
     print(chosen_pics)
     init_pics = []
     for index in chosen_pics :
-        init_pics.append(pack_image(pic_list[index]))
+        ##init_pics.append(pack_image(pic_list[index]))
+        init_pics.append(pic_list[index])
+
     return np.array(init_pics)
 
 def pack_image(image):

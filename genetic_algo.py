@@ -88,7 +88,7 @@ def Mutation(pop, mut_rate, mut_param): ##besoin savoir composition vecteur
     new_pop = np.copy(pop)
     j = 0
     for genome in new_pop :##besoin copie profonde ?
-        for i in len(genome) :
+        for i in range(len(genome)) :
                     if (random() < mut_rate) :
                         """
                         pour test
@@ -148,8 +148,10 @@ def Crossing_Over(pop, cross_rate):
             flat_genome[posc:len(flat_genome)] = flat_indc[posc:len(flat_indc)]
             flat_indc[posc:len(flat_indc)] = tmp
 
-            new_pop[i] = itrf.pack_image(flat_genome)
-            new_pop[indc] = itrf.pack_image(flat_indc)
+            #new_pop[i] = itrf.pack_image(flat_genome)
+            #new_pop[indc] = itrf.pack_image(flat_indc)
+            new_pop[i] = flat_genome
+            new_pop[indc] = flat_indc
 
         return new_pop
 
