@@ -62,7 +62,7 @@ def CaractInit():
         elif (d=="Chauve" and b!="Autre"):
             messagebox.showerror(title="Erreur de selection", message="Un individu chauve n'a pas de couleur de cheveux veuillez selectionner Autre en couleur de cheveux ")
         else :
-            
+
             if (a=="Homme"):
                 listAttrInit["Homme"]=1
 
@@ -106,8 +106,14 @@ def CaractInit():
 
     #Header
     dessin=Frame(selectCaract, bg="#689d71",height=heightFen/7,width=widthFen)
-    title=Label(dessin,text="JAANE DOE",foreground='white',bg="#689d71",font=("Aldo",30))
+    title=Label(dessin,text="JAANE DOE",foreground='white',bg="#689d71",font=("Aldo",60))
     explication=Label(dessin,text="Veuillez selectionner les caracteristiques  de l'aggresseur, si vous choisissez chauve en coupe de cheveux, selectionnez autre en couleur de cheveux",bg="#689d71",foreground='white')
+
+    imgLogo = Image.open('Logo.jpg')
+    imgLogo=imgLogo.resize((100,100))
+    logo = ImageTk.PhotoImage(imgLogo)
+    logof=Label(dessin,image=logo)
+
     #Style Combobox
     style= ttk.Style()
     style.theme_use('clam')
@@ -139,6 +145,11 @@ def CaractInit():
     valider=Button(selectCaract, text="Valider", command=getAll)
 
     #grid
+    dessin.grid_rowconfigure(0, weight=1)
+    dessin.grid_rowconfigure(1, weight=1)
+    dessin.grid_columnconfigure(0, weight=1)
+    dessin.grid_columnconfigure(1, weight=1)
+    dessin.grid_columnconfigure(2, weight=1)
     selectCaract.grid_rowconfigure(0, weight=1)
     selectCaract.grid_rowconfigure(1, weight=1)
     selectCaract.grid_rowconfigure(2, weight=1)
@@ -157,8 +168,9 @@ def CaractInit():
     listComboSourcils.grid(column=1, row=3)
     listComboLunettes.grid(column=0, row=4)
     valider.grid(column=1,row=4)
-    explication.pack(side='bottom')
-    title.pack()
+    explication.grid(row=1,column=0, columnspan=3)
+    title.grid(row=0,column=1)
+    logof.grid(row=0,column=0)
 
     # affichage de la fenêtre
     selectCaract.mainloop()
@@ -261,12 +273,11 @@ def init_selection(pic_list):
 
 #############################################################################################################################
 def choixPhoto(images):
+
+    arrayRetour=[]
     #Carcteristique Fenêtre
     widthFen=1400
     heightFen=800
-
-    arrayRetour=[]
-
     choPho = Tk()
     choPho.title('JAANE DOE')
     choPho.geometry(str(widthFen)+'x'+str(heightFen))
@@ -276,8 +287,13 @@ def choixPhoto(images):
     dessin=Frame(choPho, bg="#689d71",height=heightFen/5,width=widthFen)
     title=Label(dessin,text="JAANE DOE",foreground='white',bg="#689d71",font=("Aldo",30))
     explication=Label(dessin,text="Veuillez selectionner les photos qui se rapprochent le plus de votre agresseur, entre 1 et 5 puis cliquez sur continuer\n les photos selectionnées sont surlignées si la derniere photo selctionnée vous plait,  cliquez sur terminer si vous desirez revenir a la generation  precedente, cliquez sur retour",bg="#689d71",foreground='white')
-    #Boutons
+    imgLogo = Image.open('Logo.jpg')
+    imgLogo=imgLogo.resize((100,100))
+    logo = ImageTk.PhotoImage(imgLogo)
+    logof=Label(dessin,image=logo)
 
+    #BOUTONS
+    #recuperation et enregistrement images
     def savefigure(index):
         nameString="./photos/photo"+str(index+1)+".png"
         plt.imshow(images[index][0])
@@ -313,7 +329,7 @@ def choixPhoto(images):
     Pho9=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
     Pho10=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
     buttons=Frame(choPho,height=heightFen/3.1,width=widthFen/7)
-
+    #boutons
     phot1=Button(Pho1,image=photo1,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(1),bg="#d0d9c8")
     phot2=Button(Pho2,image=photo2,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(2),bg="#d0d9c8")
     phot3=Button(Pho3,image=photo3,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(3),bg="#d0d9c8")
@@ -325,15 +341,17 @@ def choixPhoto(images):
     phot9=Button(Pho9,image=photo9,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(9),bg="#d0d9c8")
     phot10=Button(Pho10,image=photo10,height=heightFen/3.1, width=widthFen/7, command=lambda : on_click(10),bg="#d0d9c8")
     photPrece=Label(phoPrece)
-
+    #Boutons latéraux
     valider=Button(buttons, text="Valider", command=lambda : debutArr(1))
     retour=Button(buttons,text="Retour", command=lambda : debutArr(-1))
     terminer=Button(buttons,text="Terminer", command=lambda : debutArr(2))
+    #Photos selectionnées
     arrayDisplay=Label(buttons,text="")
 
     dictPhot={1:photo1,2:photo2,3:photo3,4:photo4,5:photo5,6:photo6,7:photo7,8:photo8,9:photo9,10:photo10}
     dictBout={1:phot1,2:phot2,3:phot3,4:phot4,5:phot5,6:phot6,7:phot7,8:phot8,9:phot9,10:phot10}
 
+    #Action boutons latéraux
     def debutArr(number) :
         nonlocal arrayRetour,dictPhot
         if (number==2):
@@ -349,7 +367,7 @@ def choixPhoto(images):
         arrayRetour.insert(0,number)
         choPho.quit()
 
-
+    #Action boutons images
     def on_click(number):
         nonlocal arrayRetour
         nonlocal dictPhot,dictBout
@@ -362,14 +380,18 @@ def choixPhoto(images):
         arrayDisplay["text"] = arrayRetour
         photPrece["image"] = dictPhot[arrayRetour[-1]]
 
-
+    #grid header
+    dessin.grid_rowconfigure(0, weight=1)
+    dessin.grid_rowconfigure(1, weight=1)
+    dessin.grid_columnconfigure(0, weight=1)
+    dessin.grid_columnconfigure(1, weight=1)
+    dessin.grid_columnconfigure(2, weight=1)
     #Grid buttons
     buttons.grid_rowconfigure(0,weight=3)
     buttons.grid_rowconfigure(1,weight=1)
     buttons.grid_rowconfigure(2,weight=1)
     buttons.grid_rowconfigure(3,weight=1)
     buttons.grid_rowconfigure(4,weight=1)
-
     #grid Principale
     choPho.grid_rowconfigure(0, weight=1)
     choPho.grid_rowconfigure(1, weight=2)
@@ -380,7 +402,6 @@ def choixPhoto(images):
     choPho.grid_columnconfigure(3, weight=1)
     choPho.grid_columnconfigure(4, weight=1)
     choPho.grid_columnconfigure(5, weight=1)
-
     #Placement sur la grid
     dessin.grid(row=0,column=0,columnspan= 6,sticky="nswe")
     Demarcation.grid(row=1,column=0,rowspan=2,sticky="nswe")
@@ -396,12 +417,16 @@ def choixPhoto(images):
     Pho9.grid(row=2,column=4)
     Pho10.grid(row=2,column=5)
     buttons.grid(row=2,column=0)
-
+    #Placement boutons lateraux
     arrayDisplay.grid(row=1, sticky="nswe")
     valider.grid(row=2,sticky="nswe")
     retour.grid(row=3,sticky="nswe")
     terminer.grid(row=4,sticky="nswe")
-
+    #Placement header
+    explication.grid(row=1,column=0, columnspan=3)
+    title.grid(row=0,column=1)
+    logof.grid(row=0,column=0)
+    #Placement photos à leur place
     phot1.pack()
     phot2.pack()
     phot3.pack()
@@ -413,8 +438,6 @@ def choixPhoto(images):
     phot9.pack()
     phot10.pack()
     photPrece.pack()
-    explication.pack(side='bottom')
-    title.pack()
 
     choPho.mainloop()
     choPho.destroy()
@@ -425,38 +448,55 @@ def phoFin(imagef):
     widthFen=1300
     heightFen=800
     fin=0
-
+    #Caracteristiques fenêtre
     phof=Toplevel()
     phof.title('JAANE DOE')
     phof.geometry(str(widthFen)+'x'+str(heightFen))
     phof.configure(bg='#d0d9c8')
 
     imagef=imagef._PhotoImage__photo.zoom(3)
-
+    #Header
     dessin=Frame(phof, bg="#689d71",height=heightFen/5,width=widthFen)
     title=Label(dessin,text="JAANE DOE",foreground='white',bg="#689d71",font=("Aldo",30))
     explication=Label(dessin,text="Pour choisir une autre photo  cliquez sur retour, pour enregistrer la photo (criminel.png) appuyez sur Telecharger puis fermer",bg="#689d71",foreground='white')
+    imgLogo = Image.open('Logo.jpg')
+    imgLogo=imgLogo.resize((100,100))
+    logo = ImageTk.PhotoImage(imgLogo)
+    logof=Label(dessin,image=logo)
+
+    #Général
     buttons=Frame(phof)
     displayPhoto=Frame(phof)
     imagefin=Label(displayPhoto,image=imagef)
-
+    #Boutons
     bretour=Button(buttons,text="Retour a la selection", command=lambda : retour())
     telecharger=Button(buttons,text="Telecharger puis fermer", command=lambda : telecharger())
-
+    #GRIDS
+    #grid header
+    dessin.grid_rowconfigure(0, weight=1)
+    dessin.grid_rowconfigure(1, weight=1)
+    dessin.grid_columnconfigure(0, weight=1)
+    dessin.grid_columnconfigure(1, weight=1)
+    dessin.grid_columnconfigure(2, weight=1)
+    #grid principale
     phof.grid_rowconfigure(0, weight=1)
     phof.grid_rowconfigure(1, weight=3)
     phof.grid_rowconfigure(2, weight=1)
     phof.grid_columnconfigure(0, weight=1)
 
+    #PLACEMENTS
     dessin.grid(row=0,column=0,columnspan= 1,sticky="nswe")
+    explication.grid(row=1,column=0, columnspan=3)
+    title.grid(row=0,column=1)
+    logof.grid(row=0,column=0)
+
     displayPhoto.grid(row=1, column=0)
     imagefin.pack()
+
     buttons.grid(row=2,column=0)
     bretour.pack(side='left')
     telecharger.pack(side='right')
-    explication.pack(side='bottom')
-    title.pack()
-
+    
     def retour():
         phof.quit()
         fin=0
