@@ -232,12 +232,13 @@ def diximages(selectionimages):
 #test
 listeimagesdepart = diximages(selectionimages)
 """
-def init_selection(pic_list):
+def init_selection(pic_list,pic_names):
     """
     Picks ten random pictures
 
         Args :
-            pic_list (np.array) : An array with all possible picture to choose from
+            pic_list (DataFrame) : An dataframe with all the encoded pictures to choose from
+            pic_names (list) : A list with the names of the pictures we want
 
         Returns :
             (np.array) : The array of chosen pictures
@@ -250,27 +251,6 @@ def init_selection(pic_list):
         init_pics.append(pic_list[index])
 
     return np.array(init_pics)
-
-def pack_image(image):
-    """
-    Puts the encoded pictures in the right format for the decoder (8,8,64)
-
-        Args :
-            image (np.array) : The line vector of the encoded picture
-
-        Returns :
-            (list) : The encoded picture in the right format
-    """
-    picture = [0] * 8
-    pix = 0
-    for i in range(8) :
-        picture[i] = [0] * 8
-        for j in range(8) :
-            picture[i][j] = [0] * 64
-            for k in range(64) :
-                picture[i][j][k] = image[pix]
-                pix +=1
-    return picture
 
 #############################################################################################################################
 def choixPhoto(images):
