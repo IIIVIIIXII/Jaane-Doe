@@ -20,8 +20,6 @@ for i in nonutilisees:
 """
 data = pds.read_csv('Total_Base_Pics_Fr.csv', header = 0, index_col = 0)
 #Voila ce qu'on obtient
-print(data.query('Chauve == 1'))
-
 #Pour la colonne Blurry on peut aussi decider de supprimer les lignes des images floues
 #Ca c'est une question a demander a Juliette
 
@@ -228,19 +226,25 @@ def diximages(selectionimages):
     """
     listeimages = list(selectionimages.index)
     imagesdepart = []
+    index_picked = np.random.permutation(len(selectionimages))[:10].tolist()
+    for i in index_picked :
+        imagesdepart.append(listeimages[i])
+    """
     for i in range(10):
         imagesdepart.append(listeimages[randint(0, len(listeimages)-1)])
+        """
     return imagesdepart
 """
 #test
 listeimagesdepart = diximages(selectionimages)
 """
-def init_selection(pic_list):
+def init_selection(pic_list,pic_names):
     """
-    Picks ten random pictures
+    Picks the encoded pictures we need
 
         Args :
-            pic_list (np.array) : An array with all possible picture to choose from
+            pic_list (DataFrame) : An dataframe with all the encoded pictures to choose from
+            pic_names (list) : A list with the names of the pictures we want
 
         Returns :
             (np.array) : The array of chosen pictures
@@ -253,27 +257,6 @@ def init_selection(pic_list):
         init_pics.append(pic_list[index])
 
     return np.array(init_pics)
-
-def pack_image(image):
-    """
-    Puts the encoded pictures in the right format for the decoder (8,8,64)
-
-        Args :
-            image (np.array) : The line vector of the encoded picture
-
-        Returns :
-            (list) : The encoded picture in the right format
-    """
-    picture = [0] * 8
-    pix = 0
-    for i in range(8) :
-        picture[i] = [0] * 8
-        for j in range(8) :
-            picture[i][j] = [0] * 64
-            for k in range(64) :
-                picture[i][j][k] = image[pix]
-                pix +=1
-    return picture
 
 #############################################################################################################################
 def choixPhoto(images):
