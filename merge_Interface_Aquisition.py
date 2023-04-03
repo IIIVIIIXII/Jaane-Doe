@@ -249,12 +249,11 @@ def init_selection(pic_list,pic_names):
         Returns :
             (np.array) : The array of chosen pictures
     """
-    chosen_pics = np.random.randint(0,len(pic_list),size = 10)
-    print(chosen_pics)
+
     init_pics = []
-    for index in chosen_pics :
+    for index in pic_names :
         ##init_pics.append(pack_image(pic_list[index]))
-        init_pics.append(pic_list[index])
+        init_pics.append(pic_list.loc[str(index)])
 
     return np.array(init_pics)
 

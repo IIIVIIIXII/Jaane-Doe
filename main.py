@@ -13,7 +13,10 @@ import merge_Interface_Aquisition as itrf
 
 
 ## 0] importations
-base_pictures = np.loadtxt('encoded_imgs3.txt')
+##base_pictures = np.loadtxt('encoded_imgs3.txt')
+
+base_pictures = pds.read_csv('my_data2.csv', header = 0,index_col = 0)
+print(base_pictures.head())
 #load = np.loadtxt('Encoded_100_vectors.txt')
 mut_param = pds.read_csv("Mutation_normal_param.csv", header = 0, index_col = 0)
 print(mut_param.head())
@@ -38,7 +41,6 @@ while not_selec :
             print("la")
             not_selec = False
 
-
 ## 2] genetic algorithm
 
 decode = keras.models.load_model("decoderModel3.h5")
@@ -49,8 +51,13 @@ cross_rate = 0.8
 p_size = 10
 n_gen = 10
 encod_size = 64
+
+init = itrf.init_selection(base_pictures,lis_pics)
+if len(init) < 10 :
+    init = ga.Next_Generation(init, p_size, mut_rate, mut_param, cross_rate)
+
 ##init = ga.Random_population(p_size,encod_size)
-init = itrf.init_selection(base_pictures)
+##init = itrf.init_selection(base_pictures)
 print(isinstance(init.tolist(), list))##besoin que chaque génome soit une liste
 fini = ga.Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,p_size,decode,n_gen)[1]
 
