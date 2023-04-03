@@ -1,8 +1,11 @@
+
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from random import *
 import matplotlib.pyplot as plt
+
+import merge_Interface_Aquisition as itrf
 
 
 
@@ -70,28 +73,28 @@ def Select_pictures(pop,choice):
             pop_chosen.append(pop[i-1])##delete the minus 1 depending on input
     return np.array(pop_chosen)
 
-def Mutation(pop, mut_rate): ##besoin savoir composition vecteur
+def Mutation(pop, mut_rate, mut_param): ##besoin savoir composition vecteur
     """
     Returns a new array of mutated version of each "genome" in pop, with a set mutation mut_rate
 
     Args :
         pop (np.array) : The population vector
         mut_rate (float) : The mutation rate for each gene
+        mut_param (DataFrame) : The parameters of the normal distribution for each neuron weight
 
     Returns :
         np.array : The vector of mutated genomes
 
     """
     new_pop = np.copy(pop)
+    j = 0
     for genome in new_pop :##besoin copie profonde ?
-        for channel in genome :
-            for vector in channel :
-                for i in range(len(vector)) :
+        for i in range(len(genome)) :
                     if (random() < mut_rate) :
                         """
                         pour test
                         """
-                        vector[i] = np.random.normal(loc = vector[i], scale = 3)
+                        genome[i] = np.random.normal(loc = mut_param.iloc[j][0], scale = mut_param.iloc[j][1])
                         """
                         pour test
                         """
@@ -109,7 +112,7 @@ def Crossing_Over(pop, cross_rate):
         np.array : The vector of genomes after the crossing over.
 
     """
-
+    """
     new_pop = np.copy(pop) # deep copy of the population
 
     for i in range(0,new_pop.shape[0]):
@@ -128,6 +131,30 @@ def Crossing_Over(pop, cross_rate):
                 new_pop[indc,posc:new_pop.shape[1]] = tmp
 
     return new_pop
+    """
+##test new version
+    new_pop = np.copy(pop) # deep copy of the population
+
+    for i in range(0,new_pop.shape[0]):
+        if random() < cross_rate:
+            flat_genome = new_pop[i].flatten() ##flatten the vector
+            indc = randint(0, new_pop.shape[0]-1) ##select random genome
+            posc = randint(0, len(flat_genome)) ##select random gene
+            flat_indc = new_pop[indc].flatten()
+
+            tmp = flat_genome[posc:len(flat_genome)]
+
+            flat_genome[posc:len(flat_genome)] = flat_indc[posc:len(flat_indc)]
+            flat_indc[posc:len(flat_indc)] = tmp
+
+            #new_pop[i] = itrf.pack_image(flat_genome)
+            #new_pop[indc] = itrf.pack_image(flat_indc)
+            new_pop[i] = flat_genome
+            new_pop[indc] = flat_indc
+
+        return new_pop
+
+
 
 def User_action(pop,decode) :
     """
@@ -143,18 +170,19 @@ def User_action(pop,decode) :
     pictures = []
     for i in range(len(pop)) :
         pictures.append(decode.predict([pop[i].tolist()]))
-    Show_pics(pictures)
+    inp = itrf.choixPhoto(pictures)
     """
     send the pictures to the graphical interface
     """
-    inp = input("Give your selection").split()
+    ##inp = input("Give your selection").split()
     action = int(inp[0])
     choice = []
     for i in range(len(inp)-1) :
         choice.append(int(inp[i+1]))
     return (action,choice)
 
-def Next_Generation(pop, N, mut_rate, cross_rate) :
+
+def Next_Generation(pop, N, mut_rate, mut_param, cross_rate) :
     """
     Recreates a full population from the pictures chosen by the user, with mutations and crossing over.
 
@@ -164,28 +192,70 @@ def Next_Generation(pop, N, mut_rate, cross_rate) :
             pop (np.array) : The population of chosen pictures
             N (int) : The size of the full population
             mut_rate (float) : The mutation rate for each gene
+            mut_param (DataFrame) : The parameters of the normal distribution for each neuron weight
             cross_rate (float) : The crossing over rate for each genome
 
         Returns :
             np.array : The new population
     """
-    new_pop = np.copy(pop)
+    new_pop = Crossing_Over(Mutation(np.copy(pop),mut_rate,mut_param),cross_rate)
     q = N//new_pop.shape[0]##how many times can we put our chosen pop in the full pop
     r = N%new_pop.shape[0]##how many pictures are needed to completely fill the pop
     mut_pop = np.copy(new_pop)
     for i in range(q-1) :##we take q - 1 because the first iteration is the starting chosen pop
-        mut_pop = Crossing_Over(Mutation(mut_pop, mut_rate),cross_rate)
+        mut_pop = Crossing_Over(Mutation(mut_pop, mut_rate, mut_param),cross_rate)
         new_pop = np.append(new_pop,mut_pop,axis = 0)
     if r != 0 :# if the population is not full yet, we add the remaining by mutating a random selection of r genomes
         ##rename variable
         rdm_draw = np.random.randint(0, new_pop.shape[0],size = r) ##rename variable
         end_pop = np.array(new_pop[rdm_draw])
-        mut_pop = Crossing_Over(Mutation(end_pop, mut_rate),cross_rate)
+        mut_pop = Crossing_Over(Mutation(end_pop, mut_rate, mut_param),cross_rate)
+        new_pop = np.append(new_pop,mut_pop,axis = 0)
+
+    return new_pop
+
+def First_Generation(pop, N, mut_rate, mut_param, cross_rate) :
+    """
+    Recreates a full population from the pictures chosen by the user, with mutations and crossing over.
+
+    This version keeps this original population with the mutated pop.
+
+        Args :
+            pop (np.array) : The population of chosen pictures
+            N (int) : The size of the full population
+            mut_rate (float) : The mutation rate for each gene
+            mut_param (DataFrame) : The parameters of the normal distribution for each neuron weight
+            cross_rate (float) : The crossing over rate for each genome
+
+        Returns :
+            np.array : The new population
+    """
+    new_pop =np.copy(pop)
+    q = N//new_pop.shape[0]##how many times can we put our chosen pop in the full pop
+    r = N%new_pop.shape[0]##how many pictures are needed to completely fill the pop
+    mut_pop = np.copy(new_pop)
+    for i in range(q-1) :##we take q - 1 because the first iteration is the starting chosen pop
+        mut_pop = Crossing_Over(Mutation(mut_pop, mut_rate, mut_param),cross_rate)
+        new_pop = np.append(new_pop,mut_pop,axis = 0)
+    if r != 0 :# if the population is not full yet, we add the remaining by mutating a random selection of r genomes
+        ##rename variable
+        rdm_draw = np.random.randint(0, new_pop.shape[0],size = r) ##rename variable
+        end_pop = np.array(new_pop[rdm_draw])
+        mut_pop = Crossing_Over(Mutation(end_pop, mut_rate, mut_param),cross_rate)
         new_pop = np.append(new_pop,mut_pop,axis = 0)
 
     return new_pop
 ####Add save of the last generation, for easy return
 def Show_pics(decoded_pic):
+    """
+    A simple function to show the pictures whithout any graphical interface
+
+        Args :
+            decoded_pic (list) : A list of the pictures we want to show, in their full format (decoded)
+
+        Returns :
+            (void) : The function only plots figures, it doesn't return anything.
+    """
     n = 10  # How many faces we will display
     plt.figure(figsize=(20, 4))
     for i in range(n):
@@ -197,12 +267,20 @@ def Show_pics(decoded_pic):
         ax.get_yaxis().set_visible(False)
     plt.show()
 
-def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
+def Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,N,decode,n_gen):
     """
     Selects the best pictures through a genetic algorithm
 
         Args :
             init (np.array) : The initial selection of pictures, after the questions
+            mut_rate (float) : The mutation rate for each gene
+            mut_param (DataFrame) : The parameters of the normal distribution for each neuron weight
+            cross_rate (float) : The crossing over rate for each genome
+            N (int) : The size of the full population
+            decode (h5 matrix) : the saved decoder neural network
+            n_gen (int) : the maximum number of generation (for testing)
+
+
 
         Returns :
             np.array : The picture closest to the user's memory (hopefully)
@@ -217,7 +295,7 @@ def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
         if choice[0] == 1 :## can change depending on input format
             pop_chosen = Select_pictures(pop,choice[1])
             previous_pop = np.copy(pop)
-            pop = Next_Generation(pop_chosen,N,mut_rate,cross_rate)
+            pop = Next_Generation(pop_chosen,N,mut_rate,mut_param,cross_rate)
         elif choice[0] == 2 : ##manages final picture choice
             pop = Select_pictures(pop,choice[1])
             end_picture = True
@@ -226,40 +304,3 @@ def Genetic_Algorithm(init,mut_rate,cross_rate,N,decode,n_gen):
 
         i += 1
     return(end_picture,pop)
-
-
-
-"""
-tests
-"""
-
-"""
-print("Test Mutation")
-popu = Random_population(10,10)
-print(popu[1])
-n_pop = Mutation(popu,0.1)
-print(n_pop[1])
-print("")
-print("Test Crossing_Over")
-print(popu)
-c_pop = Crossing_Over(popu,0.5)
-print("after crossing over")
-print(c_pop)
-"""
-"""
-print("test input")
-c_test = Get_input()
-print(c_test)
-"""
-"""
-print('Test Algo "total"')
-init = Random_population(10,2)
-decode = keras.models.load_model("path/to/model")
-final = Genetic_Algorithm(init,0.1,0.2,10,decode,10)
-print(final)
-"""
-"""
-print(11//2)#quotient
-print(11%2)#remainder
-"""
-##Select_pictures sur pop -1 pour le moment
