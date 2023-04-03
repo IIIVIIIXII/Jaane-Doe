@@ -97,14 +97,17 @@ def CaractInit():
                 break
 
     #Carcteristique Fenêtre
+    widthFen=1400
+    heightFen=800
+
     selectCaract = Tk()
-    selectCaract.title('Robocop')
-    selectCaract.geometry('1300x800')
+    selectCaract.title('JAANE DOE')
+    selectCaract.geometry(str(widthFen)+'x'+str(heightFen))
     selectCaract.configure(bg='#d0d9c8')
 
     #Header
-    dessin=Frame(selectCaract, bg="#689d71")
-    title=Label(dessin,text="Robocop",foreground='white',bg="#689d71",font=("Aldo",30))
+    dessin=Frame(selectCaract, bg="#689d71",height=heightFen/7,width=widthFen)
+    title=Label(dessin,text="JAANE DOE",foreground='white',bg="#689d71",font=("Aldo",30))
     explication=Label(dessin,text="Veuillez selectionner les caracteristiques  de l'aggresseur, si vous choisissez chauve en coupe de cheveux, selectionnez autre en couleur de cheveux",bg="#689d71",foreground='white')
     #Style Combobox
     style= ttk.Style()
@@ -281,13 +284,13 @@ def choixPhoto(images):
     arrayRetour=[]
 
     choPho = Tk()
-    choPho.title('Robocop')
+    choPho.title('JAANE DOE')
     choPho.geometry(str(widthFen)+'x'+str(heightFen))
     choPho.configure(bg='#d0d9c8')
 
     #Header
     dessin=Frame(choPho, bg="#689d71",height=heightFen/5,width=widthFen)
-    title=Label(dessin,text="Robocop",foreground='white',bg="#689d71",font=("Aldo",30))
+    title=Label(dessin,text="JAANE DOE",foreground='white',bg="#689d71",font=("Aldo",30))
     explication=Label(dessin,text="Veuillez selectionner les photos qui se rapprochent le plus de votre agresseur, entre 1 et 5 puis cliquez sur continuer\n les photos selectionnées sont surlignées si la derniere photo selctionnée vous plait,  cliquez sur terminer si vous desirez revenir a la generation  precedente, cliquez sur retour",bg="#689d71",foreground='white')
     #Boutons
 
@@ -440,15 +443,15 @@ def phoFin(imagef):
     fin=0
 
     phof=Toplevel()
-    phof.title('Robocop')
+    phof.title('JAANE DOE')
     phof.geometry(str(widthFen)+'x'+str(heightFen))
     phof.configure(bg='#d0d9c8')
 
     imagef=imagef._PhotoImage__photo.zoom(3)
 
     dessin=Frame(phof, bg="#689d71",height=heightFen/5,width=widthFen)
-    title=Label(dessin,text="Robocop",foreground='white',bg="#689d71",font=("Aldo",30))
-    explication=Label(dessin,text="Pour choisir une autre photo  cliquez sur retour, pour enregistrer la photo (criminel.png)appuyez sur Telecharger puis fermer",bg="#689d71",foreground='white')
+    title=Label(dessin,text="JAANE DOE",foreground='white',bg="#689d71",font=("Aldo",30))
+    explication=Label(dessin,text="Pour choisir une autre photo  cliquez sur retour, pour enregistrer la photo (criminel.png) appuyez sur Telecharger puis fermer",bg="#689d71",foreground='white')
     buttons=Frame(phof)
     displayPhoto=Frame(phof)
     imagefin=Label(displayPhoto,image=imagef)
