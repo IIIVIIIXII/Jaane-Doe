@@ -13,7 +13,8 @@ import merge_Interface_Aquisition as itrf
 
 
 ## 0] importations
-load = np.loadtxt('encoded_imgs3.txt')
+base_pictures = np.loadtxt('encoded_imgs3.txt')
+print(base_pictures)
 #load = np.loadtxt('Encoded_100_vectors.txt')
 mut_param = pds.read_csv("Mutation_normal_param.csv", header = 0, index_col = 0)
 print(mut_param.head())
@@ -27,11 +28,21 @@ while not_selec :
     if len(pics) < 1 :
         messagebox.showwarning("erreur", "aucune photo n'a été trouvée pour les attributs selectionés")
     else :
-        lis_pics = itrf.diximages(pics)##picks the same image multiple times
-        print(lis_pics)
-        not_selec = False
+        if len(pics) < 10 :
+            lis_pics = list(pics.index.values)
+            print(lis_pics)
+            print("ici")
+            not_selec = False
+        else :
+            lis_pics = itrf.diximages(pics)##picks the same image multiple times
+            print(lis_pics)
+            print("la")
+            not_selec = False
 
 
+"""
+
+"""
 ## 2] genetic algorithm
 
 decode = keras.models.load_model("decoderModel3.h5")
@@ -43,12 +54,11 @@ p_size = 10
 n_gen = 10
 encod_size = 64
 ##init = ga.Random_population(p_size,encod_size)
-init = itrf.init_selection(load)
+init = itrf.init_selection(base_pictures)
 print(isinstance(init.tolist(), list))##besoin que chaque génome soit une liste
 fini = ga.Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,p_size,decode,n_gen)[1]
 
 testu = decode.predict([fini[0].tolist()])
-##testu = decode.predict([test])
 plt.imshow(testu[0])
 plt.show()
 

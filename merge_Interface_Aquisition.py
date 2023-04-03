@@ -20,8 +20,6 @@ for i in nonutilisees:
 """
 data = pds.read_csv('Total_Base_Pics_Fr.csv', header = 0, index_col = 0)
 #Voila ce qu'on obtient
-print(data.query('Chauve == 1'))
-
 #Pour la colonne Blurry on peut aussi decider de supprimer les lignes des images floues
 #Ca c'est une question a demander a Juliette
 
@@ -223,8 +221,13 @@ def diximages(selectionimages):
     """
     listeimages = list(selectionimages.index)
     imagesdepart = []
+    index_picked = np.random.permutation(len(selectionimages))[:10].tolist()
+    for i in index_picked :
+        imagesdepart.append(listeimages[i])
+    """
     for i in range(10):
         imagesdepart.append(listeimages[randint(0, len(listeimages)-1)])
+        """
     return imagesdepart
 """
 #test
@@ -232,10 +235,11 @@ listeimagesdepart = diximages(selectionimages)
 """
 def init_selection(pic_list):
     """
-    Picks ten random pictures
+    Picks the picture selected from the array of encoded pictures
 
         Args :
             pic_list (np.array) : An array with all possible picture to choose from
+            pick_list (list) : A list of the name of all chosen pics
 
         Returns :
             (np.array) : The array of chosen pictures
