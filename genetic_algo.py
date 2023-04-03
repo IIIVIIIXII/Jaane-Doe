@@ -1,3 +1,4 @@
+
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -139,8 +140,6 @@ def Crossing_Over(pop, cross_rate):
             flat_genome = new_pop[i].flatten() ##flatten the vector
             indc = randint(0, new_pop.shape[0]-1) ##select random genome
             posc = randint(0, len(flat_genome)) ##select random gene
-            print("posc")
-            print(posc)
             flat_indc = new_pop[indc].flatten()
 
             tmp = flat_genome[posc:len(flat_genome)]
@@ -305,40 +304,3 @@ def Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,N,decode,n_gen):
 
         i += 1
     return(end_picture,pop)
-
-
-
-"""
-tests
-"""
-
-"""
-print("Test Mutation")
-popu = Random_population(10,10)
-print(popu[1])
-n_pop = Mutation(popu,0.1)
-print(n_pop[1])
-print("")
-print("Test Crossing_Over")
-print(popu)
-c_pop = Crossing_Over(popu,0.5)
-print("after crossing over")
-print(c_pop)
-"""
-"""
-print("test input")
-c_test = Get_input()
-print(c_test)
-"""
-"""
-print('Test Algo "total"')
-init = Random_population(10,2)
-decode = keras.models.load_model("path/to/model")
-final = Genetic_Algorithm(init,0.1,0.2,10,decode,10)
-print(final)
-"""
-"""
-print(11//2)#quotient
-print(11%2)#remainder
-"""
-##Select_pictures sur pop -1 pour le moment

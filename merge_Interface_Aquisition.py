@@ -8,16 +8,7 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageTk
 from tkinter import messagebox
 
-"""
-#Importation de la table
-data = pds.read_csv('list_attr_celeba.txt', delim_whitespace=True, index_col = 0) #là j'utilise les deux listes (celle raccourcie et celle entière psk y a pas le header dans la liste raccourcie)
-#print(data)
 
-#Tri des colonnes (en ne gardant que celles que l'ont va utiliser)
-nonutilisees = ['Double_Chin', 'Bags_Under_Eyes', 'Bangs', 'Big_Lips', 'Chubby', 'High_Cheekbones', 'Narrow_Eyes', 'Attractive', 'Oval_Face', 'Pale_Skin', 'Rosy_Cheeks', 'Smiling', 'Wearing_Earrings', 'Wearing_Hat', 'Wearing_Lipstick', 'Wearing_Necklace', 'Wearing_Necktie', 'Heavy_Makeup', 'Mouth_Slightly_Open', 'Blurry']
-for i in nonutilisees:
-    data = data.drop(i, axis=1)
-"""
 data = pds.read_csv('Total_Base_Pics_Fr.csv', header = 0, index_col = 0)
 #Voila ce qu'on obtient
 #Pour la colonne Blurry on peut aussi decider de supprimer les lignes des images floues
@@ -218,8 +209,6 @@ def selectionlignes(choix):
         elif choix.iloc[0]['Chauve'] == -1 and choix.iloc[0]['Clair'] == -1 and choix.iloc[0]['Foncé'] == 1 :
             c += " and (Cheveux_Bruns == " + str(1) + " or " + "Cheveux_Noirs == " + str(1) + ") and " + "(Cheveux_Blonds == " + str(-1) + " or " + "Cheveux_Gris == " + str(-1) + ")"
     newdata = data.query(str(c))
-    print(data.query("Chauve == 1"))
-    print(str(c))
     return newdata
 #la je suis bloquee parce qu'il y a une erreur que je comprends pas
 """
@@ -495,7 +484,7 @@ def phoFin(imagef):
     buttons.grid(row=2,column=0)
     bretour.pack(side='left')
     telecharger.pack(side='right')
-    
+
     def retour():
         phof.quit()
         fin=0
