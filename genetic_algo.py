@@ -214,6 +214,38 @@ def Next_Generation(pop, N, mut_rate, mut_param, cross_rate) :
         new_pop = np.append(new_pop,mut_pop,axis = 0)
 
     return new_pop
+
+def First_Generation(pop, N, mut_rate, mut_param, cross_rate) :
+    """
+    Recreates a full population from the pictures chosen by the user, with mutations and crossing over.
+
+    This version keeps this original population with the mutated pop.
+
+        Args :
+            pop (np.array) : The population of chosen pictures
+            N (int) : The size of the full population
+            mut_rate (float) : The mutation rate for each gene
+            mut_param (DataFrame) : The parameters of the normal distribution for each neuron weight
+            cross_rate (float) : The crossing over rate for each genome
+
+        Returns :
+            np.array : The new population
+    """
+    new_pop =np.copy(pop)
+    q = N//new_pop.shape[0]##how many times can we put our chosen pop in the full pop
+    r = N%new_pop.shape[0]##how many pictures are needed to completely fill the pop
+    mut_pop = np.copy(new_pop)
+    for i in range(q-1) :##we take q - 1 because the first iteration is the starting chosen pop
+        mut_pop = Crossing_Over(Mutation(mut_pop, mut_rate, mut_param),cross_rate)
+        new_pop = np.append(new_pop,mut_pop,axis = 0)
+    if r != 0 :# if the population is not full yet, we add the remaining by mutating a random selection of r genomes
+        ##rename variable
+        rdm_draw = np.random.randint(0, new_pop.shape[0],size = r) ##rename variable
+        end_pop = np.array(new_pop[rdm_draw])
+        mut_pop = Crossing_Over(Mutation(end_pop, mut_rate, mut_param),cross_rate)
+        new_pop = np.append(new_pop,mut_pop,axis = 0)
+
+    return new_pop
 ####Add save of the last generation, for easy return
 def Show_pics(decoded_pic):
     """
