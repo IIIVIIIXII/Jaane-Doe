@@ -62,6 +62,7 @@ def CaractInit():
         elif (d=="Chauve" and b!="Autre"):
             messagebox.showerror(title="Erreur de selection", message="Un individu chauve n'a pas de couleur de cheveux veuillez selectionner Autre en couleur de cheveux ")
         else :
+            
             if (a=="Homme"):
                 listAttrInit["Homme"]=1
 
@@ -76,7 +77,7 @@ def CaractInit():
             ecrireChoix(listAttrInit,listNez,e)
             ecrireChoix(listAttrInit,listSourcils,f)
 
-            selectCaract.destroy()
+            selectCaract.quit()
 
     def ecrireChoixBarbe(listAttrInit,listCombo,get):
         for i in listCombo :
@@ -161,7 +162,7 @@ def CaractInit():
 
     # affichage de la fenêtre
     selectCaract.mainloop()
-
+    selectCaract.destroy()
     return listAttrInit
 
 
@@ -238,7 +239,7 @@ def diximages(selectionimages):
 #test
 listeimagesdepart = diximages(selectionimages)
 """
-def init_selection(pic_list,pic_names):
+def init_selection(pic_list):
     """
     Picks the encoded pictures we need
 
