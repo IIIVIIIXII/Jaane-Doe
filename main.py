@@ -47,9 +47,5 @@ init = itrf.init_selection(load)
 print(isinstance(init.tolist(), list))##besoin que chaque génome soit une liste
 fini = ga.Genetic_Algorithm(init,mut_rate,mut_param,cross_rate,p_size,decode,n_gen)[1]
 
-testu = decode.predict([fini[0].tolist()])
-##testu = decode.predict([test])
-plt.imshow(testu[0])
-plt.show()
 
 ## 3] final choice

@@ -98,13 +98,14 @@ def CaractInit():
 
     #Carcteristique Fenêtre
     selectCaract = Tk()
-    selectCaract.title('Accueil')
+    selectCaract.title('Robocop')
     selectCaract.geometry('1300x800')
     selectCaract.configure(bg='#d0d9c8')
 
     #Header
     dessin=Frame(selectCaract, bg="#689d71")
-    explication=Label(dessin,text="Veuillez selectionner les caracteristiques \n de l'aggresseur, si vous choisissez chauve en coupe de cheveux,\n selectionnez autre en couleur de cheveux",bg="#689d71",foreground='white')
+    title=Label(dessin,text="Robocop",foreground='white',bg="#689d71",font=("Aldo",30))
+    explication=Label(dessin,text="Veuillez selectionner les caracteristiques  de l'aggresseur, si vous choisissez chauve en coupe de cheveux, selectionnez autre en couleur de cheveux",bg="#689d71",foreground='white')
     #Style Combobox
     style= ttk.Style()
     style.theme_use('clam')
@@ -154,7 +155,8 @@ def CaractInit():
     listComboSourcils.grid(column=1, row=3)
     listComboLunettes.grid(column=0, row=4)
     valider.grid(column=1,row=4)
-    explication.pack(side='right')
+    explication.pack(side='bottom')
+    title.pack()
 
     # affichage de la fenêtre
     selectCaract.mainloop()
@@ -279,13 +281,14 @@ def choixPhoto(images):
     arrayRetour=[]
 
     choPho = Tk()
-    choPho.title('Choix Photo')
+    choPho.title('Robocop')
     choPho.geometry(str(widthFen)+'x'+str(heightFen))
     choPho.configure(bg='#d0d9c8')
 
     #Header
     dessin=Frame(choPho, bg="#689d71",height=heightFen/5,width=widthFen)
-    explication=Label(dessin,text="Veuillez selectionner\n les photos qui se rapprochent le plus\n de votre agresseur, entre 1 et 5 puis cliquez sur continuer\n les photos selectionnées sont surlignées\n si la derniere photo selctionnée vous plait, \n cliquez sur terminer\n si vous desirez revenir a la generation \n precedente, cliquez sur retour",bg="#689d71",foreground='white')
+    title=Label(dessin,text="Robocop",foreground='white',bg="#689d71",font=("Aldo",30))
+    explication=Label(dessin,text="Veuillez selectionner les photos qui se rapprochent le plus de votre agresseur, entre 1 et 5 puis cliquez sur continuer\n les photos selectionnées sont surlignées si la derniere photo selctionnée vous plait,  cliquez sur terminer si vous desirez revenir a la generation  precedente, cliquez sur retour",bg="#689d71",foreground='white')
     #Boutons
 
     def savefigure(index):
@@ -423,7 +426,8 @@ def choixPhoto(images):
     phot9.pack()
     phot10.pack()
     photPrece.pack()
-    explication.pack(side='right')
+    explication.pack(side='bottom')
+    title.pack()
 
     choPho.mainloop()
     choPho.destroy()
@@ -436,14 +440,15 @@ def phoFin(imagef):
     fin=0
 
     phof=Toplevel()
-    phof.title('Photo finale')
+    phof.title('Robocop')
     phof.geometry(str(widthFen)+'x'+str(heightFen))
     phof.configure(bg='#d0d9c8')
 
     imagef=imagef._PhotoImage__photo.zoom(3)
 
     dessin=Frame(phof, bg="#689d71",height=heightFen/5,width=widthFen)
-    explication=Label(dessin,text="Pour choisir une autre photo \n cliquez sur retour, pour enregistrer la photo (criminel.png)\nappuyez sur Telecharger puis fermer",bg="#689d71",foreground='white')
+    title=Label(dessin,text="Robocop",foreground='white',bg="#689d71",font=("Aldo",30))
+    explication=Label(dessin,text="Pour choisir une autre photo  cliquez sur retour, pour enregistrer la photo (criminel.png)appuyez sur Telecharger puis fermer",bg="#689d71",foreground='white')
     buttons=Frame(phof)
     displayPhoto=Frame(phof)
     imagefin=Label(displayPhoto,image=imagef)
@@ -462,7 +467,8 @@ def phoFin(imagef):
     buttons.grid(row=2,column=0)
     bretour.pack(side='left')
     telecharger.pack(side='right')
-    explication.pack(side='right')
+    explication.pack(side='bottom')
+    title.pack()
 
     def retour():
         phof.quit()
