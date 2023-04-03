@@ -234,7 +234,7 @@ listeimagesdepart = diximages(selectionimages)
 """
 def init_selection(pic_list,pic_names):
     """
-    Picks ten random pictures
+    Picks the encoded pictures we need
 
         Args :
             pic_list (DataFrame) : An dataframe with all the encoded pictures to choose from
