@@ -1,0 +1,37 @@
+projet\_cruche\_faye\_mengelle\_perez\_rifki package
+====================================================
+
+Submodules
+----------
+
+projet\_cruche\_faye\_mengelle\_perez\_rifki.genetic\_algo module
+-----------------------------------------------------------------
+
+.. automodule:: projet_cruche_faye_mengelle_perez_rifki.genetic_algo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+projet\_cruche\_faye\_mengelle\_perez\_rifki.main module
+--------------------------------------------------------
+
+.. automodule:: projet_cruche_faye_mengelle_perez_rifki.main
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+projet\_cruche\_faye\_mengelle\_perez\_rifki.merge\_Interface\_Aquisition module
+--------------------------------------------------------------------------------
+
+.. automodule:: projet_cruche_faye_mengelle_perez_rifki.merge_Interface_Aquisition
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: projet_cruche_faye_mengelle_perez_rifki
+   :members:
+   :undoc-members:
+   :show-inheritance:
